@@ -22,7 +22,7 @@ namespace Calculator_Console.UI
             if (IsSelected(previousChoice))
             {
                 // Errors
-                WriteLineColor($"\nWrong option: {previousChoice}", ConsoleColor.DarkRed);
+                Console_WriteLineColor($"\nWrong option: {previousChoice}", ConsoleColor.DarkRed);
             }
 
             // Answer
@@ -34,13 +34,15 @@ namespace Calculator_Console.UI
         /// </summary>
         private static void DisplaySelectableOptions()
         {
+            // Operations
             foreach (var method in Helper.Methods)
             {
-                WriteColor($"{method.Key}", ConsoleColor.Yellow);
+                Console_WriteColor($"{method.Key}", ConsoleColor.Yellow);
                 Console.WriteLine($". {method.Value}");
             }
 
-            WriteColor($"[{Keys.Quit}]", ConsoleColor.Yellow);
+            // Quit option
+            Console_WriteColor($"[{Keys.Quit}]", ConsoleColor.Yellow);
             Console.WriteLine(". Quit the application");
         }
 
@@ -51,21 +53,19 @@ namespace Calculator_Console.UI
         {
             return !string.IsNullOrWhiteSpace(previousChoice);
         }
-
-        #region Colorful output
-        private static void WriteColor(string text, ConsoleColor color)
+        
+        private static void Console_WriteColor(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(text);
             Console.ResetColor();
         }
 
-        private static void WriteLineColor(string text, ConsoleColor color)
+        private static void Console_WriteLineColor(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(text);
             Console.ResetColor();
         }
-        #endregion
     }
 }
