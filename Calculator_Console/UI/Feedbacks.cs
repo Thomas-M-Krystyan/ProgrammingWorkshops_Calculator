@@ -1,5 +1,6 @@
 ﻿using Calculator_Console.Constants;
 using Calculator_Console.Validation;
+using Environment = System.Environment;
 
 namespace Calculator_Console.UI
 {
@@ -14,7 +15,10 @@ namespace Calculator_Console.UI
             Messages.SelectCalculatorOperation(userChoice);
             userChoice = Console.ReadLine();
 
-            // 2. Validate if the user input is numeric
+            // 2. Quit if requested
+            ProcessQuitRequest(userChoice);
+
+            // 3. Validate if the user input is numeric
             if (!Validate.IsInputNumeric(ref userChoice, out var value))
             {
                 return false;
@@ -22,7 +26,7 @@ namespace Calculator_Console.UI
 
             operationNumber = value;
 
-            // 3. Validate if there is such calculator operation
+            // 4. Validate if there is such calculator operation
             return Validate.IsOperationExisting(value);
         }
 
@@ -31,8 +35,11 @@ namespace Calculator_Console.UI
             // 1. Ask for the number or cancellation
             Messages.SelectNumber(operationNumber, whichNumber);
             var userChoice = Console.ReadLine();
+            
+            // 2. Quit if requested
+            ProcessQuitRequest(userChoice);
 
-            // 2. Validate if the user input is floating point number
+            // 3. Validate if the user input is floating point number
             if (!Validate.IsInputDouble(ref userChoice, out var value))
             {
                 return false;
@@ -44,7 +51,7 @@ namespace Calculator_Console.UI
         }
 
         /// <summary>
-        /// Handles the eventual request to Quit the application.
+        /// Checks if the Quit operation was requested.
         /// </summary>
         internal static void ProcessQuitRequest(string userChoice)
         {

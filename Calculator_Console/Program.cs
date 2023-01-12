@@ -34,8 +34,5 @@ static void ApplicationWorkflow()
                 }
             }
         }
-
-        // Quit
-        Feedbacks.ProcessQuitRequest(userChoice);
     }
 }
