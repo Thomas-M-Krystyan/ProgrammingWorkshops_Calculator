@@ -53,14 +53,20 @@ namespace Calculator_Console.UI
         {
             return !string.IsNullOrWhiteSpace(previousChoice);
         }
-        
+
+        /// <summary>
+        /// Writes the specified text in color, using <see cref="Console.Write(string)"/> method.
+        /// </summary>
         private static void Console_WriteColor(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(text);
             Console.ResetColor();
         }
-
+        
+        /// <summary>
+        /// Writes the specified text in color, using <see cref="Console.WriteLine(string)"/> method.
+        /// </summary>
         private static void Console_WriteLineColor(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
