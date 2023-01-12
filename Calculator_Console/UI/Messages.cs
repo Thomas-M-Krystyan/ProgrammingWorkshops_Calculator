@@ -8,13 +8,13 @@ namespace Calculator_Console.UI
         /// <summary>
         /// Prompts user to select from variety of available calculator operations.
         /// </summary>
-        /// <param name="previousChoice">The previous choice.</param>
+        /// <param name="previousChoice">The previous input that user provided (can be empty initially).</param>
         internal static void SelectCalculatorOperation(string previousChoice)
         {
             Console.Clear();
 
             // Header
-            Console.WriteLine("Select the given calculator operation and press [Enter]:\n");
+            Console.WriteLine("Select the given mathematical operation and press [Enter]:\n");
 
             // Options
             DisplaySelectableMathOptions();
