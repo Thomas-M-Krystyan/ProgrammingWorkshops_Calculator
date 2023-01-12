@@ -9,38 +9,32 @@ namespace Calculator_Console.Helpers
         /// Gets the available calculator operations from <see cref="IArithmetic"/> interface.
         /// </summary>
         /// <value>
-        /// The collection of methods data:
         ///   <list type="bullet">
-        ///     <item>The order number of a method</item>
-        ///     <item>The name of a method</item>
+        ///     <item>Key: The order number of a method (1, 2, 3...)</item>
+        ///     <item>Value: The name of a method ("Add", "Subtract"...)</item>
         ///   </list>
         /// </value>
-        internal static IEnumerable<(int OrderNumber, string Name)> Methods { get; }
+        internal static IDictionary<int , string> Methods { get; }
 
         /// <summary>
         /// Initializes the <see cref="Helper"/> class.
         /// </summary>
         static Helper()
         {
-            Methods = GetArithmeticOperations().ToArray();
+            Methods = GetArithmeticOperations();
         }
 
         /// <summary>
-        /// Populates the collection of available calculator operations.
+        /// Gets the collection of ordered available calculator operations.
         /// </summary>
         /// <returns>
-        /// The collection of available operations with order numbers in the given format:
-        ///
-        /// <list type="bullet">
-        ///   <item>(1, "Method A")</item>
-        ///   <item>(2, "Method B")</item>
-        /// </list>
+        ///   Data in a dictionary format: (1, "Name").
         /// </returns>
-        private static IEnumerable<(int, string)> GetArithmeticOperations()
+        private static IDictionary<int, string> GetArithmeticOperations()
         {
             var orderNumber = 1;
 
-            return GetMethods().Select(method => (orderNumber++, method.Name));
+            return GetMethods().ToDictionary(_ => orderNumber++, method => method.Name);
         }
 
         /// <summary>

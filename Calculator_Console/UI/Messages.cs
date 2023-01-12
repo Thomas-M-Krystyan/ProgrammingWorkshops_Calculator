@@ -36,8 +36,8 @@ namespace Calculator_Console.UI
         {
             foreach (var method in Helper.Methods)
             {
-                WriteColor($"{method.OrderNumber}", ConsoleColor.Yellow);
-                Console.WriteLine($". {method.Name}");
+                WriteColor($"{method.Key}", ConsoleColor.Yellow);
+                Console.WriteLine($". {method.Value}");
             }
 
             WriteColor($"[{Keys.Quit}]", ConsoleColor.Yellow);

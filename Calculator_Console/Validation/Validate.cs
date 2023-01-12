@@ -32,7 +32,7 @@ namespace Calculator_Console.Validation
         /// </summary>
         internal static bool IsOperationExisting(ushort value)
         {
-            return value > 0 && value <= Helper.Methods.Count();
+            return value > 0 && value <= Helper.Methods.Count;
         }
     }
 }
