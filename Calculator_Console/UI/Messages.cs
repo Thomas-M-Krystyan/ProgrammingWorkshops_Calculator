@@ -19,9 +19,9 @@ namespace Calculator_Console.UI
             // Options
             DisplaySelectableMathOptions();
 
+            // Handle (potential) errors
             if (IsSelected(previousChoice))
             {
-                // Errors
                 Console_WriteLineColor($"\nWrong option: {previousChoice}", ConsoleColor.DarkRed);
             }
 
