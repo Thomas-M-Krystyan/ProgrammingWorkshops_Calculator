@@ -14,7 +14,7 @@ namespace Calculator_Console.Helpers
         ///     <item>Value: The name of a method ("Add", "Subtract"...)</item>
         ///   </list>
         /// </value>
-        internal static IDictionary<int , string> Methods { get; }
+        internal static IDictionary<ushort , string> Methods { get; }
 
         /// <summary>
         /// Initializes the <see cref="Helper"/> class.
@@ -30,9 +30,9 @@ namespace Calculator_Console.Helpers
         /// <returns>
         ///   Data in a dictionary format: (1, "Name").
         /// </returns>
-        private static IDictionary<int, string> GetArithmeticOperations()
+        private static IDictionary<ushort, string> GetArithmeticOperations()
         {
-            var orderNumber = 1;
+            ushort orderNumber = 1;
 
             return GetMethods().ToDictionary(_ => orderNumber++, method => method.Name);
         }
