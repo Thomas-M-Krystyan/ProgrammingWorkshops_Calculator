@@ -14,9 +14,9 @@ static void ApplicationWorkflow()
     double firstNumber = default;
     double secondNumber = default;
 
+    // Select mathematical operation
     while (true)
     {
-        // Select mathematical operation
         if (Feedbacks.GetMathOperation(ref userChoice, ref operationNumber))
         {
             // First number
