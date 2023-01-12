@@ -27,7 +27,7 @@ namespace Calculator_Console.UI
         }
 
         /// <summary>
-        /// Handles the eventual request to [Q]uit the application.
+        /// Handles the eventual request to Quit the application.
         /// </summary>
         internal static void ProcessQuitRequest(string userChoice)
         {

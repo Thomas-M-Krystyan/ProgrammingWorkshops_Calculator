@@ -1,4 +1,5 @@
 ﻿using Calculator_Console.Configuration;
+using Calculator_Console.Helpers;
 using Calculator_Console.UI;
 
 // Configuration
@@ -22,10 +23,8 @@ static void ApplicationWorkflow()
             // 4. Ask for the first input number
             while (true)
             {
-                Console.Write("First number: ");
-                userChoice = Console.ReadLine();
+                Messages.SelectFirstNumber(userChoice, operationNumber);
 
-                if (!double.TryParse(userChoice, out firstNumber)) { continue; }
 
                 break;
             }

@@ -8,25 +8,42 @@ namespace Calculator_Console.UI
         /// <summary>
         /// Prompts user to select from variety of available calculator operations.
         /// </summary>
-        /// <param name="previousChoice">The previous input that user provided (can be empty initially).</param>
-        internal static void SelectCalculatorOperation(string previousChoice)
+        /// <param name="userChoice">The input that user provided (will be initially empty).</param>
+        internal static void SelectCalculatorOperation(string userChoice)
         {
             Console.Clear();
 
             // Header
-            Console.WriteLine("Select the given mathematical operation and press [Enter]:\n");
+            Console.Write("Select the given mathematical operation");
+            // Confirm
+            AndConfirm();
 
             // Options
             DisplaySelectableMathOptions();
 
             // Handle (potential) errors
-            if (IsSelected(previousChoice))
+            if (IsSelected(userChoice))
             {
-                Console_WriteLineColor($"\nWrong option: {previousChoice}", ConsoleColor.DarkRed);
+                Console_WriteLineColor($"\nWrong option: {userChoice}", ConsoleColor.DarkRed);
             }
 
             // Answer
             Console.Write("\nOperation: ");
+        }
+
+        internal static void SelectFirstNumber(ushort operationNumber)
+        {
+            Console.Clear();
+
+            // Reminder about selected method
+            Console_WriteColor(Helper.Methods[operationNumber], ConsoleColor.White);
+            // Quit or Cancel
+            OrQuitOrCancel();
+            // Confirm
+            AndConfirm();
+            
+            // Answer
+            Console.Write("The first number: ");
         }
 
         /// <summary>
@@ -45,6 +62,30 @@ namespace Calculator_Console.UI
             Console.Write("\n[");
             Console_WriteColor(Keys.Quit, ConsoleColor.Yellow);
             Console.WriteLine("]uit the application");
+        }
+
+        /// <summary>
+        /// Adds reusable formula to Quit or Cancel the operation.
+        /// </summary>
+        private static void OrQuitOrCancel()
+        {
+            // Quit
+            Console.Write(" or select [");
+            Console_WriteColor(Keys.Quit, ConsoleColor.Yellow);
+            Console.Write("]uit / [");
+            // Cancel
+            Console_WriteColor(Keys.Cancel, ConsoleColor.Yellow);
+            Console.Write("]ancel");
+        }
+
+        /// <summary>
+        /// Adds reusable formula about pressing Enter key to confirm the user choice.
+        /// </summary>
+        private static void AndConfirm()
+        {
+            Console.Write(" and press [");
+            Console_WriteColor(Keys.Confirm, ConsoleColor.Yellow);
+            Console.WriteLine("]:\n");
         }
 
         /// <summary>
