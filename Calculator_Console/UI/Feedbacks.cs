@@ -53,7 +53,7 @@ namespace Calculator_Console.UI
         /// <summary>
         /// Checks if the Quit operation was requested.
         /// </summary>
-        internal static void ProcessQuitRequest(string userChoice)
+        private static void ProcessQuitRequest(string userChoice)
         {
             if (string.Equals(userChoice, Keys.Quit, StringComparison.OrdinalIgnoreCase))
             {
