@@ -33,7 +33,7 @@ namespace Calculator_Console.UI
         /// <para>
         /// Quits the application on request.
         /// </para>
-        internal static bool GetMathParameter(ref double firstNumber, ushort operationNumber, string whichNumber)
+        internal static bool GetMathParameter(out double firstNumber, ushort operationNumber, string whichNumber)
         {
             // 1. Ask for the number or cancellation
             Messages.SelectNumber(operationNumber, whichNumber);
@@ -43,14 +43,7 @@ namespace Calculator_Console.UI
             ProcessQuitRequest(userChoice);
 
             // 3. Validate if the user input is floating point number
-            if (!Validate.IsInputDouble(ref userChoice, out var value))
-            {
-                return false;
-            }
-
-            firstNumber = value;
-
-            return true;
+            return Validate.IsInputDouble(ref userChoice, out firstNumber);
         }
 
         /// <summary>

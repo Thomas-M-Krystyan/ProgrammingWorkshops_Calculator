@@ -10,8 +10,6 @@ ApplicationWorkflow();
 static void ApplicationWorkflow()
 {
     var userChoice = string.Empty;  // Stores user inputs. In case of invalid ones they will be used in user communication (error)
-    double firstNumber = default;
-    double secondNumber = default;
 
     // Select mathematical operation
     while (true)
@@ -21,12 +19,12 @@ static void ApplicationWorkflow()
             // First number
             while (true)
             {
-                if (Feedbacks.GetMathParameter(ref firstNumber, operationNumber, "first"))
+                if (Feedbacks.GetMathParameter(out var firstNumber, operationNumber, "first"))
                 {
                     // Second number
                     while (true)
                     {
-                        if (Feedbacks.GetMathParameter(ref secondNumber, operationNumber, "second"))
+                        if (Feedbacks.GetMathParameter(out var secondNumber, operationNumber, "second"))
                         {
                         }
                     }
