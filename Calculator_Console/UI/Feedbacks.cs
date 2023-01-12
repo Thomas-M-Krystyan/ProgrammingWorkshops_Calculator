@@ -9,9 +9,12 @@ namespace Calculator_Console.UI
         /// <summary>
         /// Process the "mathematical operation" user input.
         /// </summary>
-        internal static bool GetMathOperation(ref string userChoice, ref ushort operationNumber)
+        /// <para>
+        /// Quits the application on request.
+        /// </para>
+        internal static bool GetMathOperation(ref string userChoice, out ushort operationNumber)
         {
-            // 1. Ask for calculator operation
+            // 1. Ask for the math operation or cancellation
             Messages.SelectCalculatorOperation(userChoice);
             userChoice = Console.ReadLine();
 
@@ -19,17 +22,17 @@ namespace Calculator_Console.UI
             ProcessQuitRequest(userChoice);
 
             // 3. Validate if the user input is numeric
-            if (!Validate.IsInputNumeric(ref userChoice, out var value))
-            {
-                return false;
-            }
-
-            operationNumber = value;
-
-            // 4. Validate if there is such calculator operation
-            return Validate.IsOperationExisting(value);
+            return Validate.IsInputNumeric(ref userChoice, out operationNumber) &&
+                   // 4. Validate if there is corresponding math operation
+                   Validate.IsOperationExisting(operationNumber);
         }
-
+        
+        /// <summary>
+        /// Collects the floating point input ("the number") required to process the selected mathematical operation.
+        /// </summary>
+        /// <para>
+        /// Quits the application on request.
+        /// </para>
         internal static bool GetMathParameter(ref double firstNumber, ushort operationNumber, string whichNumber)
         {
             // 1. Ask for the number or cancellation
