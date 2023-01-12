@@ -13,7 +13,7 @@ namespace Calculator_Console.UI
             Console.Clear();
 
             // Header
-            Console.WriteLine("Select calculator operation:\n");
+            Console.WriteLine("Select the given calculator operation and press [Enter]:\n");
 
             // Options
             foreach (var method in Helper.Methods)
@@ -25,12 +25,11 @@ namespace Calculator_Console.UI
             // Errors
             if (!string.IsNullOrWhiteSpace(previousChoice))
             {
-                Console.Write("\nPrevious: ");
-                WriteLineColor($"{previousChoice}", ConsoleColor.DarkRed);
+                WriteLineColor($"\nWrong option: {previousChoice}", ConsoleColor.DarkRed);
             }
 
             // Answer
-            Console.Write("\nAnswer: ");
+            Console.Write("\nOption: ");
         }
 
         #region Colorful output

@@ -2,14 +2,15 @@
 using Calculator_Console.UI;
 using Calculator_Console.Validation;
 
+// Configuration
 Settings.ConfigureApplication(args);
 
+// Workflow
 ApplicationWorkflow();
 
-#region Workflow
 static void ApplicationWorkflow()
 {
-    var userChoice = string.Empty;
+    var userChoice = string.Empty;  // Stores user inputs. In case of invalid ones they will be used in user communication (error)
     double firstNumber = default;
     double secondNumber = default;
 
@@ -20,7 +21,7 @@ static void ApplicationWorkflow()
         userChoice = Console.ReadLine();
 
         // 2. Validate if the user input is numeric
-        if (!ushort.TryParse(userChoice, out var value)) { continue; }
+        if (!Validate.IsInputNumeric(ref userChoice, out var value)) { continue; }
 
         // 3. Validate if there is such calculator operation
         if (!Validate.IsOperationExisting(value)) { continue; }
@@ -28,7 +29,7 @@ static void ApplicationWorkflow()
         // 4. Ask for the first input number
         while (true)
         {
-            Console.Write("First number:");
+            Console.Write("First number: ");
             userChoice = Console.ReadLine();
 
             if (!double.TryParse(userChoice, out firstNumber)) { continue; }
@@ -39,4 +40,3 @@ static void ApplicationWorkflow()
         break;
     }
 }
-#endregion

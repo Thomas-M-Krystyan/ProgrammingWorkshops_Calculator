@@ -28,7 +28,14 @@ namespace Calculator_Console.Helpers
         /// <summary>
         /// Populates the collection of available calculator operations.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// The collection of available operations with order numbers in the given format:
+        ///
+        /// <list type="bullet">
+        ///   <item>(1, "Method A")</item>
+        ///   <item>(2, "Method B")</item>
+        /// </list>
+        /// </returns>
         private static IEnumerable<(int, string)> GetArithmeticOperations()
         {
             var orderNumber = 1;
