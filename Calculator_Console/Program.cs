@@ -1,5 +1,4 @@
 ﻿using Calculator_Console.Configuration;
-using Calculator_Console.Helpers;
 using Calculator_Console.UI;
 
 // Configuration
@@ -20,13 +19,19 @@ static void ApplicationWorkflow()
         // Select mathematical operation
         if (Feedbacks.GetMathOperation(ref userChoice, ref operationNumber))
         {
-            // 4. Ask for the first input number
+            // First number
             while (true)
             {
-                Messages.SelectFirstNumber(userChoice, operationNumber);
-
-
-                break;
+                if (Feedbacks.GetMathParameter(ref firstNumber, operationNumber, "first"))
+                {
+                    // Second number
+                    while (true)
+                    {
+                        if (Feedbacks.GetMathParameter(ref secondNumber, operationNumber, "second"))
+                        {
+                        }
+                    }
+                }
             }
         }
 

@@ -15,6 +15,16 @@ namespace Calculator_Console.Validation
         }
 
         /// <summary>
+        /// Determines whether the provided input is a floating number (double).
+        /// </summary>
+        internal static bool IsInputDouble(ref string userChoice, out double value)
+        {
+            userChoice = TranslateEmptyInput(userChoice);
+
+            return double.TryParse(userChoice, out value);
+        }
+
+        /// <summary>
         /// Recognizes the empty input (Enter, Tab, Space, etc.).
         /// </summary>
         private static string TranslateEmptyInput(string userChoice)

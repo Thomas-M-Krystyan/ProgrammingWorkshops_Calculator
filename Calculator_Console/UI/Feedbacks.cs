@@ -26,6 +26,23 @@ namespace Calculator_Console.UI
             return Validate.IsOperationExisting(value);
         }
 
+        internal static bool GetMathParameter(ref double firstNumber, ushort operationNumber, string whichNumber)
+        {
+            // 1. Ask for the number or cancellation
+            Messages.SelectNumber(operationNumber, whichNumber);
+            var userChoice = Console.ReadLine();
+
+            // 2. Validate if the user input is floating point number
+            if (!Validate.IsInputDouble(ref userChoice, out var value))
+            {
+                return false;
+            }
+
+            firstNumber = value;
+
+            return true;
+        }
+
         /// <summary>
         /// Handles the eventual request to Quit the application.
         /// </summary>

@@ -31,7 +31,7 @@ namespace Calculator_Console.UI
             Console.Write("\nOperation: ");
         }
 
-        internal static void SelectFirstNumber(ushort operationNumber)
+        internal static void SelectNumber(ushort operationNumber, string whichNumber)
         {
             Console.Clear();
 
@@ -43,7 +43,7 @@ namespace Calculator_Console.UI
             AndConfirm();
             
             // Answer
-            Console.Write("The first number: ");
+            Console.Write($"The {whichNumber} number: ");
         }
 
         /// <summary>
