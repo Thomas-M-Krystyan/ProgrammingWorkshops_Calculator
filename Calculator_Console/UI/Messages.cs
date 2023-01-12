@@ -42,8 +42,9 @@ namespace Calculator_Console.UI
             }
 
             // Quit option
-            Console_WriteColor($"[{Keys.Quit}]", ConsoleColor.Yellow);
-            Console.WriteLine(". Quit the application");
+            Console.Write("\n[");
+            Console_WriteColor(Keys.Quit, ConsoleColor.Yellow);
+            Console.WriteLine("]uit the application");
         }
 
         /// <summary>
