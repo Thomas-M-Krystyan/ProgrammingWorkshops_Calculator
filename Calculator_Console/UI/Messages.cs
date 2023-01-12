@@ -17,7 +17,7 @@ namespace Calculator_Console.UI
             Console.WriteLine("Select the given calculator operation and press [Enter]:\n");
 
             // Options
-            DisplaySelectableOptions();
+            DisplaySelectableMathOptions();
 
             if (IsSelected(previousChoice))
             {
@@ -32,7 +32,7 @@ namespace Calculator_Console.UI
         /// <summary>
         /// Displays the selectable options for the user.
         /// </summary>
-        private static void DisplaySelectableOptions()
+        private static void DisplaySelectableMathOptions()
         {
             // Operations
             foreach (var method in Helper.Methods)
