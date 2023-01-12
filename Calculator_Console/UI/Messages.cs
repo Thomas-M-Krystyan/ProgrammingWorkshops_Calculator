@@ -1,4 +1,5 @@
-﻿using Calculator_Console.Helpers;
+﻿using Calculator_Console.Constants;
+using Calculator_Console.Helpers;
 
 namespace Calculator_Console.UI
 {
@@ -16,20 +17,39 @@ namespace Calculator_Console.UI
             Console.WriteLine("Select the given calculator operation and press [Enter]:\n");
 
             // Options
+            DisplaySelectableOptions();
+
+            if (IsSelected(previousChoice))
+            {
+                // Errors
+                WriteLineColor($"\nWrong option: {previousChoice}", ConsoleColor.DarkRed);
+            }
+
+            // Answer
+            Console.Write("\nOperation: ");
+        }
+
+        /// <summary>
+        /// Displays the selectable options for the user.
+        /// </summary>
+        private static void DisplaySelectableOptions()
+        {
             foreach (var method in Helper.Methods)
             {
                 WriteColor($"{method.OrderNumber}", ConsoleColor.Yellow);
                 Console.WriteLine($". {method.Name}");
             }
 
-            // Errors
-            if (!string.IsNullOrWhiteSpace(previousChoice))
-            {
-                WriteLineColor($"\nWrong option: {previousChoice}", ConsoleColor.DarkRed);
-            }
+            WriteColor($"[{Keys.Quit}]", ConsoleColor.Yellow);
+            Console.WriteLine(". Quit the application");
+        }
 
-            // Answer
-            Console.Write("\nOption: ");
+        /// <summary>
+        /// Determines whether the user typed something already.
+        /// </summary>
+        private static bool IsSelected(string previousChoice)
+        {
+            return !string.IsNullOrWhiteSpace(previousChoice);
         }
 
         #region Colorful output
