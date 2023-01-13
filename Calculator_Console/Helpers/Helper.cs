@@ -14,7 +14,7 @@ namespace Calculator_Console.Helpers
         ///     <item>Value: The name of a method ("Add", "Subtract"...)</item>
         ///   </list>
         /// </value>
-        internal static IDictionary<ushort , string> Methods { get; }
+        internal static IDictionary<ushort , Func<double, double, double>> Methods { get; }
 
         /// <summary>
         /// Initializes the <see cref="Helper"/> class.
@@ -28,13 +28,17 @@ namespace Calculator_Console.Helpers
         /// Gets the collection of ordered available calculator operations.
         /// </summary>
         /// <returns>
-        ///   Data in a dictionary format: (1, "Name").
+        ///   Data format: (1, method()).
         /// </returns>
-        private static IDictionary<ushort, string> GetArithmeticOperations()
+        private static IDictionary<ushort, Func<double, double, double>> GetArithmeticOperations()
         {
             ushort orderNumber = 1;
-
-            return GetMethods().ToDictionary(_ => orderNumber++, method => method.Name);
+            
+            return GetMethods().ToDictionary(_ =>
+                // Key
+                orderNumber++,
+                // Value
+                GetMethodDelegate);
         }
 
         /// <summary>
@@ -44,6 +48,15 @@ namespace Calculator_Console.Helpers
         private static IEnumerable<MethodInfo> GetMethods()
         {
             return typeof(IArithmetic).GetMethods(BindingFlags.Public | BindingFlags.Instance);
+        }
+
+        /// <summary>
+        /// Gets the the delegate to the provided method.
+        /// </summary>
+        private static Func<double, double, double> GetMethodDelegate(MethodInfo method)
+        {
+            // Creates a specific delegate type for instance methods
+            return (Func<double, double, double>)Delegate.CreateDelegate(typeof(Func<double, double, double>), null, method);
         }
     }
 }

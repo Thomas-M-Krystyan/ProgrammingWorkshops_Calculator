@@ -1,6 +1,7 @@
 ﻿using Calculator_Console.Enums;
+using Calculator_Console.Helpers;
 using Calculator_Console.Validation;
-using Environment = System.Environment;
+using Operations.Implementation;
 
 namespace Calculator_Console.UI
 {
@@ -9,73 +10,104 @@ namespace Calculator_Console.UI
         /// <summary>
         /// Process the "mathematical operation" user input.
         /// </summary>
-        /// <para>
-        /// Quits the application on request.
-        /// </para>
-        internal static bool GetValidOperation(ref string userChoice, out ushort operationNumber, out Request request)
+        internal static ushort GetValidOperation()
         {
-            operationNumber = default;
-            request = Request.Continue;
+            var keepAsking = true;
+            var userChoice = string.Empty;
+            var operationNumber = default(ushort);
 
-            // 1. Ask for the math operation or cancellation
-            Messages.SelectCalculatorOperation(userChoice);
-            userChoice = Console.ReadLine();
-
-            // 2. Quit option
-            if (Validate.IsQuitRequested(userChoice))
+            while (keepAsking)
             {
-                request = Request.Quit;
+                // 1. Ask for the math operation or cancellation
+                Messages.SelectCalculatorOperation(userChoice);
+                userChoice = Console.ReadLine();
 
-                return true;
+                // 2. Quit option
+                if (Validate.IsQuitRequested(userChoice))
+                {
+                    Environment.Exit(0);
+                }
+
+                // 3. Validate if the user input is numeric
+                keepAsking = !(Validate.IsInputNumeric(ref userChoice, out operationNumber) &&
+                               // 4. Validate if there is corresponding math operation
+                               Validate.IsOperationExisting(operationNumber));
             }
 
-            // 3. Validate if the user input is numeric
-            return Validate.IsInputNumeric(ref userChoice, out operationNumber) &&
-                   // 4. Validate if there is corresponding math operation
-                   Validate.IsOperationExisting(operationNumber);
+            return operationNumber;
         }
         
         /// <summary>
         /// Collects the floating point input ("the number") required to process the selected mathematical operation.
         /// </summary>
-        /// <para>
-        /// Quits the application on request.
-        /// </para>
-        internal static bool GetValidParameter(out double firstNumber, ushort operationNumber, Number whichNumber, out Request request)
+        internal static double GetValidParameter(ushort operationNumber, Number whichNumber)
         {
-            firstNumber = default;
-            request = Request.Continue;
+            var keepAsking = true;
+            var userChoice = string.Empty;
+            var firstNumber = default(double);
 
-            // 1. Ask for the number or cancellation
-            Messages.SelectNumber(operationNumber, whichNumber);
-            var userChoice = Console.ReadLine();
-            
-            // 2. Quit option
-            if (Validate.IsQuitRequested(userChoice))
+            while (keepAsking)
             {
-                request = Request.Quit;
+                // 1. Ask for the number or cancellation
+                Messages.SelectNumber(userChoice, operationNumber, whichNumber);
+                userChoice = Console.ReadLine();
 
-                return true;
+                // 2. Quit option
+                if (Validate.IsQuitRequested(userChoice))
+                {
+                    Environment.Exit(0);
+                }
+
+                // 3. Cancel option
+                if (Validate.IsCancelRequested(userChoice))
+                {
+                    switch (whichNumber)
+                    {
+                        case Number.First:
+                            // Ask for the math operation again
+                            GetValidOperation();
+                            break;
+
+                        case Number.Second:
+                            // Ask for the 1st number again
+                            GetValidParameter(operationNumber, Number.First);
+                            break;
+                    }
+                }
+
+                // 4. Validate if the user input is floating point number
+                keepAsking = !Validate.IsInputDouble(ref userChoice, out firstNumber);
             }
-            
-            // 3. Cancel option
-            if (Validate.IsCancelRequested(userChoice))
-            {
-                request = Request.Cancel;
 
-                return true;
-            }
-
-            // 4. Validate if the user input is floating point number
-            return Validate.IsInputDouble(ref userChoice, out firstNumber);
+            return firstNumber;
         }
-        
+
         /// <summary>
-        /// Quits the application.
+        /// Performs the specific math operation with given parameters (numbers).
         /// </summary>
-        internal static void Quit()
+        internal static void PerformOperation(double firstNumber, double secondNumber, ushort operationNumber)
         {
-            Environment.Exit(0);
+            // 1a. Resolve calculator method
+            var method = Helper.Methods[operationNumber];
+
+            var result = new Arithmetic().Add(firstNumber, secondNumber);
+            // 1b. Execute the calculator method
+            //var result = method.Invoke(firstNumber, secondNumber);
+
+            // 1c. Result
+            Messages.PrintResult(result);
+            var userChoice = Console.ReadKey();
+
+            // 2. Quit option
+            if (userChoice.Key == ConsoleKey.Q)
+            {
+                Environment.Exit(0);
+            }
+            // 3. Cancel option
+            else
+            {
+                Program.ApplicationWorkflow();
+            }
         }
     }
 }

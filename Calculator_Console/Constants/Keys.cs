@@ -1,5 +1,8 @@
 ﻿namespace Calculator_Console.Constants
 {
+    /// <summary>
+    /// The supported keyboard keys.
+    /// </summary>
     internal static class Keys
     {
         internal const string Confirm = "Enter";

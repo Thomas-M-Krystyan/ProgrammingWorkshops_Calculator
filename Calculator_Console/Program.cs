@@ -2,73 +2,32 @@
 using Calculator_Console.Enums;
 using Calculator_Console.UI;
 
-// Configuration
-Settings.ConfigureApplication(args);
-
-// Workflow
-ApplicationWorkflow();
-
-static void ApplicationWorkflow()
+namespace Calculator_Console
 {
-    var userChoice = string.Empty;  // Stores user inputs. In case of invalid ones they will be used in user communication (error)
-    var request = Request.Continue;
-
-    while (ShouldContinueOn(request))
+    public static class Program
     {
-        // Select mathematical operation
-        if (!Feedback.GetValidOperation(ref userChoice, out var operationNumber, out request))
+        public static void Main(string[] args)
         {
-            if (request == Request.Quit)
-            {
-                Feedback.Quit();
-            }
+            // Configuration
+            Settings.ConfigureApplication(args);
 
-            continue;
+            // Workflow
+            ApplicationWorkflow();
         }
 
-        while (ShouldContinueOn(request))
+        internal static void ApplicationWorkflow()
         {
-            // First number
-            if (!Feedback.GetValidParameter(out var firstNumber, operationNumber, Number.First, out request))
-            {
-                if (request == Request.Cancel)
-                {
-                    break;
-                }
+            // Mathematical operation
+            var operationNumber = Feedback.GetValidOperation();
+            
+            // The first number
+            var firstNumber = Feedback.GetValidParameter(operationNumber, Number.First);
+            
+            // The second number
+            var secondNumber = Feedback.GetValidParameter(operationNumber, Number.Second);
 
-                if (request == Request.Quit)
-                {
-                    Feedback.Quit();
-                }
-
-                continue;
-            }
-
-            while (ShouldContinueOn(request))
-            {
-                // Second number
-                if (!Feedback.GetValidParameter(out var secondNumber, operationNumber, Number.Second, out request))
-                {
-                    if (request == Request.Cancel)
-                    {
-                        break;
-                    }
-
-                    if (request == Request.Quit)
-                    {
-                        Feedback.Quit();
-                    }
-
-                    continue;
-                }
-
-
-            }
+            // The result of calculation
+            Feedback.PerformOperation(firstNumber, secondNumber, operationNumber);
         }
     }
-}
-
-static bool ShouldContinueOn(Request request)
-{
-    return request == Request.Continue;
 }
