@@ -1,4 +1,6 @@
 ﻿using Calculator_Console.Constants;
+using Calculator_Console.Enums;
+using Calculator_Console.Extensions;
 using Calculator_Console.Helpers;
 
 namespace Calculator_Console.UI
@@ -31,7 +33,7 @@ namespace Calculator_Console.UI
             Console.Write("\nOperation: ");
         }
 
-        internal static void SelectNumber(ushort operationNumber, string whichNumber)
+        internal static void SelectNumber(ushort operationNumber, Number whichNumber)
         {
             Console.Clear();
 
@@ -43,7 +45,7 @@ namespace Calculator_Console.UI
             AndConfirm();
             
             // Answer
-            Console.Write($"The {whichNumber} number: ");
+            Console.Write($"The {whichNumber.LowerCase()} number: ");
         }
 
         /// <summary>

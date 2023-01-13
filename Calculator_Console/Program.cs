@@ -1,4 +1,5 @@
 ﻿using Calculator_Console.Configuration;
+using Calculator_Console.Enums;
 using Calculator_Console.UI;
 
 // Configuration
@@ -10,26 +11,64 @@ ApplicationWorkflow();
 static void ApplicationWorkflow()
 {
     var userChoice = string.Empty;  // Stores user inputs. In case of invalid ones they will be used in user communication (error)
+    var request = Request.Continue;
 
-    // Select mathematical operation
-    while (true)
+    while (ShouldContinueOn(request))
     {
-        if (Feedbacks.GetMathOperation(ref userChoice, out var operationNumber))
+        // Select mathematical operation
+        if (!Feedback.GetValidOperation(ref userChoice, out var operationNumber, out request))
+        {
+            if (request == Request.Quit)
+            {
+                Feedback.Quit();
+            }
+
+            continue;
+        }
+
+        while (ShouldContinueOn(request))
         {
             // First number
-            while (true)
+            if (!Feedback.GetValidParameter(out var firstNumber, operationNumber, Number.First, out request))
             {
-                if (Feedbacks.GetMathParameter(out var firstNumber, operationNumber, "first"))
+                if (request == Request.Cancel)
                 {
-                    // Second number
-                    while (true)
-                    {
-                        if (Feedbacks.GetMathParameter(out var secondNumber, operationNumber, "second"))
-                        {
-                        }
-                    }
+                    break;
                 }
+
+                if (request == Request.Quit)
+                {
+                    Feedback.Quit();
+                }
+
+                continue;
+            }
+
+            while (ShouldContinueOn(request))
+            {
+                // Second number
+                if (!Feedback.GetValidParameter(out var secondNumber, operationNumber, Number.Second, out request))
+                {
+                    if (request == Request.Cancel)
+                    {
+                        break;
+                    }
+
+                    if (request == Request.Quit)
+                    {
+                        Feedback.Quit();
+                    }
+
+                    continue;
+                }
+
+
             }
         }
     }
+}
+
+static bool ShouldContinueOn(Request request)
+{
+    return request == Request.Continue;
 }

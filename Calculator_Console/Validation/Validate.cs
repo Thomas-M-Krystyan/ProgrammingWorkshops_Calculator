@@ -1,4 +1,5 @@
-﻿using Calculator_Console.Helpers;
+﻿using Calculator_Console.Constants;
+using Calculator_Console.Helpers;
 
 namespace Calculator_Console.Validation
 {
@@ -43,6 +44,16 @@ namespace Calculator_Console.Validation
         internal static bool IsOperationExisting(ushort value)
         {
             return value > 0 && value <= Helper.Methods.Count;
+        }
+
+        internal static bool IsQuitRequested(string userChoice)
+        {
+            return string.Equals(userChoice, Keys.Quit, StringComparison.OrdinalIgnoreCase);
+        }
+
+        internal static bool IsCancelRequested(string userChoice)
+        {
+            return string.Equals(userChoice, Keys.Cancel, StringComparison.OrdinalIgnoreCase);
         }
     }
 }
