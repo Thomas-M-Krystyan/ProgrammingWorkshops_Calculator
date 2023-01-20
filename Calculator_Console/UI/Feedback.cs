@@ -7,95 +7,94 @@ namespace Calculator_Console.UI
 {
     internal static class Feedback
     {
+        private static string _userChoice = string.Empty;
+
         /// <summary>
         /// Process the "mathematical operation" user input.
         /// </summary>
-        internal static ushort GetValidOperation()
+        internal static bool GetValidOperation(out ushort operationNumber)
         {
-            var keepAsking = true;
-            var userChoice = string.Empty;
-            var operationNumber = default(ushort);
+            // 1. Ask for the math operation or cancellation
+            Messages.SelectCalculatorOperation(_userChoice);
+            _userChoice = Console.ReadLine();
 
-            while (keepAsking)
+            // 2. Quit option
+            if (Validate.IsQuitRequested(_userChoice))
             {
-                // 1. Ask for the math operation or cancellation
-                Messages.SelectCalculatorOperation(userChoice);
-                userChoice = Console.ReadLine();
-
-                // 2. Quit option
-                if (Validate.IsQuitRequested(userChoice))
-                {
-                    Environment.Exit(0);
-                }
-
-                // 3. Validate if the user input is numeric
-                keepAsking = !(Validate.IsInputNumeric(ref userChoice, out operationNumber) &&
-                               // 4. Validate if there is corresponding math operation
-                               Validate.IsOperationExisting(operationNumber));
+                Environment.Exit(0);
             }
 
-            return operationNumber;
+            // 3. Validate if the user input is numeric
+            var isSuccess = Validate.IsInputNumeric(ref _userChoice, out operationNumber) &&
+                            // 4. Validate if there is corresponding math operation
+                            Validate.IsOperationExisting(operationNumber);
+
+            if (isSuccess)
+            {
+                ClearAnswers();
+            }
+
+            return isSuccess;
         }
         
         /// <summary>
         /// Collects the floating point input ("the number") required to process the selected mathematical operation.
         /// </summary>
-        internal static double GetValidParameter(ushort operationNumber, Number whichNumber)
+        internal static bool GetValidParameter(ushort operationNumber, Number whichNumber, out double selectedValue)
         {
-            var keepAsking = true;
-            var userChoice = string.Empty;
-            var firstNumber = default(double);
+            // 1. Ask for the number or cancellation
+            Messages.SelectNumber(_userChoice, operationNumber, whichNumber);
+            _userChoice = Console.ReadLine();
 
-            while (keepAsking)
+            // 2. Quit option
+            if (Validate.IsQuitRequested(_userChoice))
             {
-                // 1. Ask for the number or cancellation
-                Messages.SelectNumber(userChoice, operationNumber, whichNumber);
-                userChoice = Console.ReadLine();
-
-                // 2. Quit option
-                if (Validate.IsQuitRequested(userChoice))
-                {
-                    Environment.Exit(0);
-                }
-
-                // 3. Cancel option
-                if (Validate.IsCancelRequested(userChoice))
-                {
-                    switch (whichNumber)
-                    {
-                        case Number.First:
-                            // Ask for the math operation again
-                            GetValidOperation();
-                            break;
-
-                        case Number.Second:
-                            // Ask for the 1st number again
-                            GetValidParameter(operationNumber, Number.First);
-                            break;
-                    }
-                }
-
-                // 4. Validate if the user input is floating point number
-                keepAsking = !Validate.IsInputDouble(ref userChoice, out firstNumber);
+                Environment.Exit(0);
             }
 
-            return firstNumber;
+            // 3. Cancel option
+            if (Validate.IsCancelRequested(_userChoice))
+            {
+                ClearAnswers();  // Reset the previous user choice (to clear "wrong choices" on the previous screen)
+                
+                Program.ApplicationWorkflow();
+            }
+
+            // 4. Validate if the user input is floating point number
+            var isSuccess = Validate.IsInputDouble(ref _userChoice, out selectedValue);
+
+            if (isSuccess)
+            {
+                ClearAnswers();
+            }
+
+            return isSuccess;
         }
 
         /// <summary>
         /// Performs the specific math operation with given parameters (numbers).
         /// </summary>
-        internal static void PerformOperation(double firstNumber, double secondNumber, ushort operationNumber)
+        internal static void PerformOperation(ushort operationNumber, double firstNumber, double secondNumber)
         {
-            // 1a. Resolve calculator method
-            var method = Helper.Methods[operationNumber];
+            // 1. Calculation and showing the result
+            try
+            {
+                // Resolve calculation method
+                var method = Helper.Methods[operationNumber];
 
-            var result = new Arithmetic().Add(firstNumber, secondNumber);
-            // 1b. Execute the calculator method
-            //var result = method.Invoke(firstNumber, secondNumber);
+                // Execute it
+                //var result = method.Invoke(firstNumber, secondNumber);
+                var result = new Arithmetic().Add(firstNumber, secondNumber);
 
-            // 1c. Result
-            Messages.PrintResult(result);
+                // SUCCESS: Print the result
+                Messages.PrintResult(result);
+            }
+            catch (Exception exception)
+            {
+                // FAILURE: Print the error
+                Console.WriteLine(exception.Message);
+            }
+            
             var userChoice = Console.ReadKey();
 
             // 2. Quit option
@@ -108,6 +107,15 @@ namespace Calculator_Console.UI
             {
                 Program.ApplicationWorkflow();
             }
+        }
+
+        /// <summary>
+        /// Clears cached user choice answers, for example to prevent showing error messages on
+        /// the next screen (still using cached result) when the proper option was chosen before.
+        /// </summary>
+        private static void ClearAnswers()
+        {
+            _userChoice = string.Empty;
         }
     }
 }

@@ -29,7 +29,8 @@ namespace Operations.Implementation
         {
             if (secondNumber == 0)
             {
-                throw new ArgumentException("Cannot divide by 0!");
+                // Replace the default exception message "Attempted to divide by 0"
+                throw new DivideByZeroException("Cannot divide by 0!");
             }
             
             return firstNumber / secondNumber;

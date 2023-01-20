@@ -17,17 +17,21 @@ namespace Calculator_Console
 
         internal static void ApplicationWorkflow()
         {
+            ushort operationNumber;
+            double firstNumber;
+            double secondNumber;
+
             // Mathematical operation
-            var operationNumber = Feedback.GetValidOperation();
-            
+            while (!Feedback.GetValidOperation(out operationNumber)) { }
+
             // The first number
-            var firstNumber = Feedback.GetValidParameter(operationNumber, Number.First);
-            
+            while (!Feedback.GetValidParameter(operationNumber, Number.First, out firstNumber)) { }
+
             // The second number
-            var secondNumber = Feedback.GetValidParameter(operationNumber, Number.Second);
+            while (!Feedback.GetValidParameter(operationNumber, Number.Second, out secondNumber)) { }
 
             // The result of calculation
-            Feedback.PerformOperation(firstNumber, secondNumber, operationNumber);
+            Feedback.PerformOperation(operationNumber, firstNumber, secondNumber);
         }
     }
 }

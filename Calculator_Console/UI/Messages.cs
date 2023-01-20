@@ -19,7 +19,7 @@ namespace Calculator_Console.UI
             Console.Clear();
 
             // Header
-            Console.Write("Select the given mathematical operation");
+            Console.Write("Select the given mathematical operation ");
             // Confirm
             AndConfirm();
 
@@ -68,13 +68,13 @@ namespace Calculator_Console.UI
             Console.Clear();
 
             // Result
-            Console.WriteLine($"The result is: {result}\n");
+            Console.Write("The result is: ");
+            Console_WriteLineColor($"{result}\n", ConsoleColor.Green);
 
-            // Continue
-            Console.Write("Press any key to continue or [");
-            // Quit
-            Console_WriteColor(Keys.Quit, ConsoleColor.Yellow);
-            Console.WriteLine("]uit: ");
+            // Continue or Quit
+            Console.Write("Press any key to continue or ");
+            Quit();
+            Console.WriteLine(":");
         }
 
         #region Display methods
@@ -83,6 +83,8 @@ namespace Calculator_Console.UI
         /// </summary>
         private static void DisplaySelectableMathOptions()
         {
+            Console.Write("\n");
+
             // Operations
             foreach (var method in Helper.Methods)
             {
@@ -90,10 +92,10 @@ namespace Calculator_Console.UI
                 Console.WriteLine($". {method.Value.Method.Name}");
             }
 
-            // Quit option
-            Console.Write("\n[");
-            Console_WriteColor(Keys.Quit, ConsoleColor.Yellow);
-            Console.WriteLine("]uit the application");
+            // Quit
+            Console.Write("\n");
+            Quit();
+            Console.WriteLine(" the application");
         }
 
         /// <summary>
@@ -105,25 +107,35 @@ namespace Calculator_Console.UI
         }
 
         /// <summary>
-        /// Adds reusable formula to Quit or Cancel the operation.
+        /// Adds reusable Quit or Cancel text to display.
         /// </summary>
         private static void OrQuitOrCancel()
         {
             // Quit
-            Console.Write(" or select [");
-            Console_WriteColor(Keys.Quit, ConsoleColor.Yellow);
-            Console.Write("]uit / [");
+            Console.Write(" or select ");
+            Quit();
             // Cancel
+            Console.Write(" / [");
             Console_WriteColor(Keys.Cancel, ConsoleColor.Yellow);
-            Console.Write("]ancel");
+            Console.Write("]ancel ");
         }
 
         /// <summary>
-        /// Adds reusable formula about pressing Enter key to confirm the user choice.
+        /// Adds reusable Quit text to display.
+        /// </summary>
+        private static void Quit()
+        {
+            Console.Write("[");
+            Console_WriteColor(Keys.Quit, ConsoleColor.Yellow);
+            Console.Write("]uit");
+        }
+
+        /// <summary>
+        /// Adds reusable press Enter to confirm text to display.
         /// </summary>
         private static void AndConfirm()
         {
-            Console.Write(" and press [");
+            Console.Write("and press [");
             Console_WriteColor(Keys.Confirm, ConsoleColor.Yellow);
             Console.WriteLine("]:");
         }
