@@ -1,10 +1,10 @@
-﻿using System;
-using Operations.Interfaces;
+﻿using Operations.Interfaces;
+using System;
 
 namespace Operations.Implementation
 {
     /// <inheritdoc cref="IArithmetic" />
-    public class Arithmetic : IArithmetic
+    public sealed class Arithmetic : IArithmetic
     {
         /// <inheritdoc />
         public double Add(double firstNumber, double secondNumber)

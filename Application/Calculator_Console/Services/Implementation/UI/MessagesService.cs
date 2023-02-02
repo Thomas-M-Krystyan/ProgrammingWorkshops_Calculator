@@ -1,20 +1,26 @@
 ﻿using Calculator_Console.Constants;
 using Calculator_Console.Enums;
 using Calculator_Console.Extensions;
-using Calculator_Console.Helpers;
+using Calculator_Console.Services.Interfaces;
+using Calculator_Console.Services.Interfaces.UI;
 
-namespace Calculator_Console.UI.Implementation
+namespace Calculator_Console.Services.Implementation.UI
 {
-    /// <summary>
-    /// The messages used for communication with the user.
-    /// </summary>
-    internal static class Messages
+    /// <inheritdoc cref="IMessagesService" />
+    internal sealed class MessagesService : IMessagesService
     {
+        private readonly IRegisterService _register;
+
         /// <summary>
-        /// Prompts user to select from variety of available calculator operations.
+        /// Initializes a new instance of the <see cref="MessagesService"/> class.
         /// </summary>
-        /// <param name="userChoice">The input that user provided (initially will be empty).</param>
-        internal static void SelectCalculatorOperation(string userChoice)
+        public MessagesService(IRegisterService register)
+        {
+            this._register = register;
+        }
+
+        /// <inheritdoc cref="IMessagesService.SelectCalculatorOperation(string)" />
+        public void SelectCalculatorOperation(string userChoice)
         {
             Console.Clear();
 
@@ -36,15 +42,13 @@ namespace Calculator_Console.UI.Implementation
             Console.Write("\nOperation: ");
         }
 
-        /// <summary>
-        /// Selects the math parameter (number) required for further calculations.
-        /// </summary>
-        internal static void SelectNumber(string userChoice, ushort operationNumber, Number whichNumber)
+        /// <inheritdoc cref="IMessagesService.SelectNumber(string, ushort, Number)" />
+        public void SelectNumber(string userChoice, ushort operationNumber, Number whichNumber)
         {
             Console.Clear();
 
             // Reminder about selected method
-            Console_WriteColor(Register.Methods[operationNumber].Method.Name, ConsoleColor.White);
+            Console_WriteColor(this._register.Methods[operationNumber].Method.Name, ConsoleColor.White);
             // Quit or Cancel
             OrQuitOrCancel();
             // Confirm
@@ -60,10 +64,8 @@ namespace Calculator_Console.UI.Implementation
             Console.Write($"\nThe {whichNumber.LowerCase()} number: ");
         }
 
-        /// <summary>
-        /// Prints the result.
-        /// </summary>
-        internal static void PrintResult(double result)
+        /// <inheritdoc cref="IMessagesService.PrintResult(double)" />
+        public void PrintResult(double result)
         {
             Console.Clear();
 
@@ -81,12 +83,12 @@ namespace Calculator_Console.UI.Implementation
         /// <summary>
         /// Displays the selectable options for the user.
         /// </summary>
-        private static void DisplaySelectableMathOptions()
+        private void DisplaySelectableMathOptions()
         {
             Console.Write("\n");
 
             // Operations
-            foreach (var method in Register.Methods)
+            foreach (KeyValuePair<ushort, Func<double, double, double>> method in this._register.Methods)
             {
                 Console_WriteColor($"{method.Key}", ConsoleColor.Yellow);
                 Console.WriteLine($". {method.Value.Method.Name}");

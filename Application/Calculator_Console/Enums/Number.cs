@@ -3,7 +3,7 @@
     /// <summary>
     /// The number math calculation parameter.
     /// </summary>
-    public enum Number
+    internal enum Number
     {
         First,
         Second

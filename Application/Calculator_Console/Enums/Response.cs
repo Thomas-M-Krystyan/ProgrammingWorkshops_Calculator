@@ -3,7 +3,7 @@
     /// <summary>
     /// The application workflow requests.
     /// </summary>
-    public enum Response
+    internal enum Response
     {
         /// <summary>
         /// Failure: Continue asking user about the certain input.

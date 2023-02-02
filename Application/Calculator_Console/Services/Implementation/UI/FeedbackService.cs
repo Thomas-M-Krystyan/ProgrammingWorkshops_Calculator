@@ -1,15 +1,13 @@
 ﻿using Calculator_Console.Enums;
-using Calculator_Console.Helpers;
-using Calculator_Console.UI.Interfaces;
-using Calculator_Console.Validation;
+using Calculator_Console.Services.Interfaces;
+using Calculator_Console.Services.Interfaces.UI;
 using Microsoft.Extensions.Logging;
-using Operations.Implementation;
 using Operations.Interfaces;
 
-namespace Calculator_Console.UI.Implementation
+namespace Calculator_Console.Services.Implementation.UI
 {
     /// <inheritdoc cref="IFeedbackService" />
-    internal sealed class Feedback : IFeedbackService
+    internal sealed class FeedbackService : IFeedbackService
     {
         // ---------------------------------------------
         // Remembered user choices
@@ -37,16 +35,27 @@ namespace Calculator_Console.UI.Implementation
         }
         // ---------------------------------------------
 
-        private readonly ILogger<Feedback> _logger;
+        private readonly ILogger<FeedbackService> _logger;
         private readonly IArithmetic _arithmetic;
+        private readonly IRegisterService _register;
+        private readonly IMessagesService _messages;
+        private readonly IValidationService _validator;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Feedback"/> class.
+        /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
-        public Feedback(ILogger<Feedback> logger, IArithmetic arithmetic)
+        public FeedbackService(
+            ILogger<FeedbackService> logger,
+            IArithmetic arithmetic,
+            IRegisterService register,
+            IMessagesService messages,
+            IValidationService validator)
         {
-            _logger = logger;
-            _arithmetic = arithmetic;
+            this._logger = logger;
+            this._arithmetic = arithmetic;
+            this._register = register;
+            this._messages = messages;
+            this._validator = validator;
         }
 
         /// <inheritdoc cref="IFeedbackService.GetValidOperation(out ushort)" />
@@ -55,23 +64,23 @@ namespace Calculator_Console.UI.Implementation
             operationNumber = default;
 
             // 1. Ask for the math operation or cancellation
-            Messages.SelectCalculatorOperation(UserChoice);
+            this._messages.SelectCalculatorOperation(UserChoice);
             UserChoice = Console.ReadLine();
 
             // 2. Quit option
-            if (Validate.IsQuitRequested(UserChoice))
+            if (this._validator.IsQuitRequested(UserChoice))
             {
                 return Response.Quit;
             }
 
-            var currentChoice = UserChoice;  // NOTE: Workaround of rule that passing properties to ref parameters is forbidden
+            string currentChoice = UserChoice;  // NOTE: Workaround of rule that passing properties to ref parameters is forbidden
 
-            var isSuccess =
+            bool isSuccess =
                 // 3. Validate if the user input is numeric
-                Validate.IsInputNumeric(ref currentChoice, out operationNumber) &&
+                this._validator.IsInputNumeric(ref currentChoice, out operationNumber) &&
                 // 4. Validate if there is corresponding math operation
-                Validate.IsOperationExisting(operationNumber);
-            
+                this._validator.IsOperationExisting(operationNumber);
+
             UserChoice = currentChoice;
 
             if (isSuccess)
@@ -92,27 +101,27 @@ namespace Calculator_Console.UI.Implementation
             selectedValue = double.NaN;
 
             // 1. Ask for the number or cancellation
-            Messages.SelectNumber(UserChoice, operationNumber, whichNumber);
+            this._messages.SelectNumber(UserChoice, operationNumber, whichNumber);
             UserChoice = Console.ReadLine();
 
             // 2. Quit option
-            if (Validate.IsQuitRequested(UserChoice))
+            if (this._validator.IsQuitRequested(UserChoice))
             {
                 return Response.Quit;
             }
 
             // 3. Restart option
-            if (Validate.IsRestartRequested(UserChoice))
+            if (this._validator.IsRestartRequested(UserChoice))
             {
                 ClearAnswers();  // Reset the previous user choice (to clear "wrong choices" on the previous screen)
 
                 return Response.StartAgain;
             }
 
-            var currentChoice = UserChoice;  // NOTE: Workaround of rule that passing properties to ref parameters is forbidden
+            string currentChoice = UserChoice;  // NOTE: Workaround of rule that passing properties to ref parameters is forbidden
 
             // 4. Validate if the user input is floating point number
-            var isSuccess = Validate.IsInputDouble(ref currentChoice, out selectedValue);
+            bool isSuccess = this._validator.IsInputDouble(ref currentChoice, out selectedValue);
 
             UserChoice = currentChoice;
 
@@ -136,19 +145,20 @@ namespace Calculator_Console.UI.Implementation
             try
             {
                 // Resolve calculation method
-                var method = Register.Methods[operationNumber];
+                Func<double, double, double> method = this._register.Methods[operationNumber];
 
                 // Execute it
-                //var result = method.Invoke(firstNumber, secondNumber);
-                var result = new Arithmetic().Add(firstNumber, secondNumber);
+                double result = method.Invoke(firstNumber, secondNumber);
 
                 // SUCCESS: Print the result
-                Messages.PrintResult(result);
+                this._messages.PrintResult(result);
             }
             catch (Exception exception)
             {
+                #pragma warning disable CA2254  // Error message cannot be a static expression because this is a generic exception handler
                 // FAILURE: Print the error
                 _logger.LogError(exception.Message);
+                #pragma warning restore CA2254
             }
 
             // 2. Quit or restart option

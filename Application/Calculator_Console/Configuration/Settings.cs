@@ -1,6 +1,7 @@
-﻿using Calculator_Console.UI.Implementation;
-using Calculator_Console.UI.Interfaces;
-using Calculator_Console.Workflow;
+﻿using Calculator_Console.Services.Implementation;
+using Calculator_Console.Services.Implementation.UI;
+using Calculator_Console.Services.Interfaces;
+using Calculator_Console.Services.Interfaces.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -24,29 +25,18 @@ namespace Calculator_Console.Configuration
         // ----------------------------------------
         private static async void ConfigureDependencyInjection(string[] arguments)
         {
-            using var host = Host.CreateDefaultBuilder(arguments)
+            using IHost host = Host.CreateDefaultBuilder(arguments)
                 .ConfigureServices((_, services) => services
                     // Logging
                     .ConfigureLogging()
                     // Services
                     .RegisterServives()
-                    .BuildServiceProvider()
+                    .BuildServiceProvider()  // Finalize preparation of services
                     // Workflow
-                    .GetService<Work>()
-                    .Start())
+                    .GetService<WorkflowService>().Start())  // Run the console calculator
                 .Build();
 
             await host.RunAsync();
-        }
-
-        private static IServiceCollection RegisterServives(this IServiceCollection serviceCollection)
-        {
-            return serviceCollection
-                // Master startup service
-                .AddSingleton<Work>()
-                // Classical services
-                .AddSingleton<IFeedbackService, Feedback>()
-                .AddSingleton<IArithmetic, Arithmetic>();
         }
 
         // --------------------------------
@@ -55,6 +45,7 @@ namespace Calculator_Console.Configuration
         private static IServiceCollection ConfigureLogging(this IServiceCollection serviceCollection)
         {
             serviceCollection
+                // Registers ILogger<T> service for console app
                 .AddLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Debug)
                                   .ClearProviders()
@@ -62,6 +53,22 @@ namespace Calculator_Console.Configuration
                 .BuildServiceProvider();
 
             return serviceCollection;
+        }
+
+        // -----------------------------------
+        // Configuration: Registering services
+        // -----------------------------------
+        private static IServiceCollection RegisterServives(this IServiceCollection serviceCollection)
+        {
+            return serviceCollection
+                // Master startup service
+                .AddSingleton<WorkflowService>()
+                // Classical services (alphabetic order)
+                .AddSingleton<IArithmetic, Arithmetic>()
+                .AddSingleton<IFeedbackService, FeedbackService>()
+                .AddSingleton<IMessagesService, MessagesService>()
+                .AddSingleton<IRegisterService, RegisterService>()
+                .AddSingleton<IValidationService, ValidationService>();
         }
     }
 }

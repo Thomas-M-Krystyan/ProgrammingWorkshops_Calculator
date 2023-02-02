@@ -1,16 +1,19 @@
 ﻿using Calculator_Console.Enums;
-using Calculator_Console.UI.Interfaces;
+using Calculator_Console.Services.Interfaces.UI;
 
-namespace Calculator_Console.Workflow
+namespace Calculator_Console.Services.Implementation
 {
-    internal class Work
+    /// <summary>
+    /// An entry-point main service responsible for starting the application workflow.
+    /// </summary>
+    internal class WorkflowService
     {
         private readonly IFeedbackService _feedbackService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Work"/> class.
+        /// Initializes a new instance of the <see cref="WorkflowService"/> class.
         /// </summary>
-        public Work(IFeedbackService feedbackService)
+        public WorkflowService(IFeedbackService feedbackService)
         {
             this._feedbackService = feedbackService;
         }
@@ -25,7 +28,7 @@ namespace Calculator_Console.Workflow
             double secondNumber = double.NaN;
 
             // Mathematical operation
-            var result = Response.KeepAsking;
+            Response result = Response.KeepAsking;
 
             while (KeepAsking(result))
             {
