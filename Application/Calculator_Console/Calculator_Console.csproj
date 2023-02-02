@@ -13,11 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Operations\Operations.csproj" />
+    <InternalsVisibleTo Include="Calculator_ConsoleTests" />
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="Calculator_ConsoleTests" />
+    <ProjectReference Include="..\..\Logic\Operations\Operations.csproj" />
   </ItemGroup>
 
 </Project>
