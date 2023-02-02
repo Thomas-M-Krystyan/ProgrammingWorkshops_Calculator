@@ -4,44 +4,75 @@ using Calculator_Console.UI.Interfaces;
 using Calculator_Console.Validation;
 using Microsoft.Extensions.Logging;
 using Operations.Implementation;
+using Operations.Interfaces;
 
 namespace Calculator_Console.UI.Implementation
 {
     /// <inheritdoc cref="IFeedbackService" />
     internal sealed class Feedback : IFeedbackService
     {
+        // ---------------------------------------------
+        // Remembered user choices
+        // ---------------------------------------------
+        private static readonly object Padlock = new();
+
         private static string _userChoice = string.Empty;
+        private static string UserChoice
+        {
+            get
+            {
+                lock (Padlock)
+                {
+                    return _userChoice;
+                }
+            }
+
+            set
+            {
+                lock (Padlock)
+                {
+                    _userChoice = value;
+                }
+            }
+        }
+        // ---------------------------------------------
 
         private readonly ILogger<Feedback> _logger;
+        private readonly IArithmetic _arithmetic;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Feedback"/> class.
         /// </summary>
-        public Feedback(ILogger<Feedback> logger)
+        public Feedback(ILogger<Feedback> logger, IArithmetic arithmetic)
         {
             _logger = logger;
+            _arithmetic = arithmetic;
         }
 
         /// <inheritdoc cref="IFeedbackService.GetValidOperation(out ushort)" />
         public Response GetValidOperation(out ushort operationNumber)
         {
+            operationNumber = default;
+
             // 1. Ask for the math operation or cancellation
-            Messages.SelectCalculatorOperation(_userChoice);
-            _userChoice = Console.ReadLine();
+            Messages.SelectCalculatorOperation(UserChoice);
+            UserChoice = Console.ReadLine();
 
             // 2. Quit option
-            if (Validate.IsQuitRequested(_userChoice))
+            if (Validate.IsQuitRequested(UserChoice))
             {
-                operationNumber = default;
-
                 return Response.Quit;
             }
 
+            var currentChoice = UserChoice;  // NOTE: Workaround of rule that passing properties to ref parameters is forbidden
+
             var isSuccess =
                 // 3. Validate if the user input is numeric
-                Validate.IsInputNumeric(ref _userChoice, out operationNumber) &&
+                Validate.IsInputNumeric(ref currentChoice, out operationNumber) &&
                 // 4. Validate if there is corresponding math operation
                 Validate.IsOperationExisting(operationNumber);
+            
+            UserChoice = currentChoice;
 
             if (isSuccess)
             {
@@ -51,8 +82,6 @@ namespace Calculator_Console.UI.Implementation
             }
             else
             {
-                operationNumber = default;
-
                 return Response.KeepAsking;
             }
         }
@@ -63,38 +92,41 @@ namespace Calculator_Console.UI.Implementation
             selectedValue = double.NaN;
 
             // 1. Ask for the number or cancellation
-            Messages.SelectNumber(_userChoice, operationNumber, whichNumber);
-            _userChoice = Console.ReadLine();
+            Messages.SelectNumber(UserChoice, operationNumber, whichNumber);
+            UserChoice = Console.ReadLine();
 
             // 2. Quit option
-            if (Validate.IsQuitRequested(_userChoice))
+            if (Validate.IsQuitRequested(UserChoice))
             {
                 return Response.Quit;
             }
 
             // 3. Restart option
-            if (Validate.IsRestartRequested(_userChoice))
+            if (Validate.IsRestartRequested(UserChoice))
             {
                 ClearAnswers();  // Reset the previous user choice (to clear "wrong choices" on the previous screen)
 
                 return Response.StartAgain;
             }
 
+            var currentChoice = UserChoice;  // NOTE: Workaround of rule that passing properties to ref parameters is forbidden
+
             // 4. Validate if the user input is floating point number
-            var isSuccess = Validate.IsInputDouble(ref _userChoice, out selectedValue);
+            var isSuccess = Validate.IsInputDouble(ref currentChoice, out selectedValue);
+
+            UserChoice = currentChoice;
 
             if (isSuccess)
             {
                 ClearAnswers();
-
-                return Response.Continue;
             }
             else
             {
                 selectedValue = double.NaN;
-
-                return Response.KeepAsking;
             }
+
+            return Response.Continue;  // NOTE: Any value to be returned. In Work class there is a variable for aggregated results from
+                                       //       both methods' invocations used to determine whether the workflow should continue or loop
         }
 
         /// <inheritdoc cref="IFeedbackService.PerformOperation(ushort, double, double)" />
@@ -131,7 +163,7 @@ namespace Calculator_Console.UI.Implementation
         /// </summary>
         private static void ClearAnswers()
         {
-            _userChoice = string.Empty;
+            UserChoice = string.Empty;
         }
     }
 }
