@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 using Operations.Implementation;
+using System;
+using System.Collections.Generic;
 
 namespace OperationsTests.Implementation
 {
@@ -13,16 +13,16 @@ namespace OperationsTests.Implementation
         private Arithmetic _arithmeticOperations;
 
         [OneTimeSetUp]
-        public void Setup()
+        public void SetupTests()
         {
-            _arithmeticOperations = new Arithmetic();
+            this._arithmeticOperations = new Arithmetic();
         }
 
         [TestCaseSource(nameof(GetArithmeticCases_Add))]
         public void TestMethod_Add_ForGiven_A_B_ReturnsExpected_C(double[] arithmeticCases)
         {
             // Act
-            var actualResult = _arithmeticOperations.Add(arithmeticCases[0], arithmeticCases[1]);
+            double actualResult = this._arithmeticOperations.Add(arithmeticCases[0], arithmeticCases[1]);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(arithmeticCases[2]));
@@ -32,7 +32,7 @@ namespace OperationsTests.Implementation
         public void TestMethod_Subtract_ForGiven_A_B_ReturnsExpected_C(double[] arithmeticCases)
         {
             // Act
-            var actualResult = _arithmeticOperations.Subtract(arithmeticCases[0], arithmeticCases[1]);
+            double actualResult = this._arithmeticOperations.Subtract(arithmeticCases[0], arithmeticCases[1]);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(arithmeticCases[2]));
@@ -42,7 +42,7 @@ namespace OperationsTests.Implementation
         public void TestMethod_Multiply_ForGiven_A_B_ReturnsExpected_C(double[] arithmeticCases)
         {
             // Act
-            var actualResult = _arithmeticOperations.Multiply(arithmeticCases[0], arithmeticCases[1]);
+            double actualResult = this._arithmeticOperations.Multiply(arithmeticCases[0], arithmeticCases[1]);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(arithmeticCases[2]));
@@ -52,7 +52,7 @@ namespace OperationsTests.Implementation
         public void TestMethod_Divide_ForGiven_A_B_ReturnsExpected_C(double[] arithmeticCases)
         {
             // Act
-            var actualResult = _arithmeticOperations.Divide(arithmeticCases[0], arithmeticCases[1]);
+            double actualResult = this._arithmeticOperations.Divide(arithmeticCases[0], arithmeticCases[1]);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(arithmeticCases[2]));
@@ -65,8 +65,8 @@ namespace OperationsTests.Implementation
             const string expectedExceptionMessage = "Cannot divide by 0!";
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
-                _arithmeticOperations.Divide(arithmeticCases[0], arithmeticCases[1]));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+                this._arithmeticOperations.Divide(arithmeticCases[0], arithmeticCases[1]));
 
             Assert.That(exception?.Message, Is.EqualTo(expectedExceptionMessage));
         }
