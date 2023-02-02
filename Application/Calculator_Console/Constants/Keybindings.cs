@@ -3,7 +3,7 @@
     /// <summary>
     /// The supported keyboard keys.
     /// </summary>
-    internal static class Keys
+    internal static class Keybindings
     {
         internal const string Confirm = "Enter";
         internal const string Quit = "Q";

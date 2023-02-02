@@ -1,18 +1,29 @@
 ﻿using Calculator_Console.Enums;
 using Calculator_Console.Helpers;
+using Calculator_Console.UI.Interfaces;
 using Calculator_Console.Validation;
+using Microsoft.Extensions.Logging;
 using Operations.Implementation;
 
-namespace Calculator_Console.UI
+namespace Calculator_Console.UI.Implementation
 {
-    internal static class Feedback
+    /// <inheritdoc cref="IFeedbackService" />
+    internal sealed class Feedback : IFeedbackService
     {
         private static string _userChoice = string.Empty;
 
+        private readonly ILogger<Feedback> _logger;
+
         /// <summary>
-        /// Process the "mathematical operation" user input.
+        /// Initializes a new instance of the <see cref="Feedback"/> class.
         /// </summary>
-        internal static bool GetValidOperation(out ushort operationNumber)
+        public Feedback(ILogger<Feedback> logger)
+        {
+            _logger = logger;
+        }
+
+        /// <inheritdoc cref="IFeedbackService.GetValidOperation(out ushort)" />
+        public Response GetValidOperation(out ushort operationNumber)
         {
             // 1. Ask for the math operation or cancellation
             Messages.SelectCalculatorOperation(_userChoice);
@@ -21,27 +32,36 @@ namespace Calculator_Console.UI
             // 2. Quit option
             if (Validate.IsQuitRequested(_userChoice))
             {
-                Environment.Exit(0);
+                operationNumber = default;
+
+                return Response.Quit;
             }
 
-            // 3. Validate if the user input is numeric
-            var isSuccess = Validate.IsInputNumeric(ref _userChoice, out operationNumber) &&
-                            // 4. Validate if there is corresponding math operation
-                            Validate.IsOperationExisting(operationNumber);
+            var isSuccess =
+                // 3. Validate if the user input is numeric
+                Validate.IsInputNumeric(ref _userChoice, out operationNumber) &&
+                // 4. Validate if there is corresponding math operation
+                Validate.IsOperationExisting(operationNumber);
 
             if (isSuccess)
             {
                 ClearAnswers();
-            }
 
-            return isSuccess;
+                return Response.Continue;
+            }
+            else
+            {
+                operationNumber = default;
+
+                return Response.KeepAsking;
+            }
         }
-        
-        /// <summary>
-        /// Collects the floating point input ("the number") required to process the selected mathematical operation.
-        /// </summary>
-        internal static bool GetValidParameter(ushort operationNumber, Number whichNumber, out double selectedValue)
+
+        /// <inheritdoc cref="IFeedbackService.GetValidParameter(ushort, Number, out double)" />
+        public Response GetValidParameter(ushort operationNumber, Number whichNumber, out double selectedValue)
         {
+            selectedValue = double.NaN;
+
             // 1. Ask for the number or cancellation
             Messages.SelectNumber(_userChoice, operationNumber, whichNumber);
             _userChoice = Console.ReadLine();
@@ -49,15 +69,15 @@ namespace Calculator_Console.UI
             // 2. Quit option
             if (Validate.IsQuitRequested(_userChoice))
             {
-                Environment.Exit(0);
+                return Response.Quit;
             }
 
-            // 3. Cancel option
-            if (Validate.IsCancelRequested(_userChoice))
+            // 3. Restart option
+            if (Validate.IsRestartRequested(_userChoice))
             {
                 ClearAnswers();  // Reset the previous user choice (to clear "wrong choices" on the previous screen)
-                
-                Program.ApplicationWorkflow();
+
+                return Response.StartAgain;
             }
 
             // 4. Validate if the user input is floating point number
@@ -66,21 +86,25 @@ namespace Calculator_Console.UI
             if (isSuccess)
             {
                 ClearAnswers();
-            }
 
-            return isSuccess;
+                return Response.Continue;
+            }
+            else
+            {
+                selectedValue = double.NaN;
+
+                return Response.KeepAsking;
+            }
         }
 
-        /// <summary>
-        /// Performs the specific math operation with given parameters (numbers).
-        /// </summary>
-        internal static void PerformOperation(ushort operationNumber, double firstNumber, double secondNumber)
+        /// <inheritdoc cref="IFeedbackService.PerformOperation(ushort, double, double)" />
+        public Response PerformOperation(ushort operationNumber, double firstNumber, double secondNumber)
         {
             // 1. Calculation and showing the result
             try
             {
                 // Resolve calculation method
-                var method = Helper.Methods[operationNumber];
+                var method = Register.Methods[operationNumber];
 
                 // Execute it
                 //var result = method.Invoke(firstNumber, secondNumber);
@@ -92,21 +116,13 @@ namespace Calculator_Console.UI
             catch (Exception exception)
             {
                 // FAILURE: Print the error
-                Console.WriteLine(exception.Message);
+                _logger.LogError(exception.Message);
             }
-            
-            var userChoice = Console.ReadKey();
 
-            // 2. Quit option
-            if (userChoice.Key == ConsoleKey.Q)
-            {
-                Environment.Exit(0);
-            }
-            // 3. Cancel option
-            else
-            {
-                Program.ApplicationWorkflow();
-            }
+            // 2. Quit or restart option
+            return Console.ReadKey().Key == ConsoleKey.Q
+                ? Response.Quit
+                : Response.StartAgain;
         }
 
         /// <summary>

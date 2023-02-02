@@ -11,7 +11,7 @@ namespace Calculator_ConsoleTests.Helpers
         public void CheckProperty_Methods_ReturnsExpectedMethodsDataCollection()
         {
             // Act
-            var methods = Helper.Methods;
+            var methods = Register.Methods;
 
             // Assert
             Assert.That(methods.Count(), Is.EqualTo(4));

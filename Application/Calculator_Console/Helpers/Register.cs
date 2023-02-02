@@ -3,7 +3,7 @@ using Operations.Interfaces;
 
 namespace Calculator_Console.Helpers
 {
-    internal static class Helper
+    internal static class Register
     {
         /// <summary>
         /// Gets the available calculator operations from <see cref="IArithmetic"/> interface.
@@ -17,9 +17,9 @@ namespace Calculator_Console.Helpers
         internal static IDictionary<ushort , Func<double, double, double>> Methods { get; }
 
         /// <summary>
-        /// Initializes the <see cref="Helper"/> class.
+        /// Initializes the <see cref="Register"/> class.
         /// </summary>
-        static Helper()
+        static Register()
         {
             Methods = GetArithmeticOperations();
         }

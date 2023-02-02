@@ -43,17 +43,17 @@ namespace Calculator_Console.Validation
         /// </summary>
         internal static bool IsOperationExisting(ushort value)
         {
-            return value > 0 && value <= Helper.Methods.Count;
+            return value > 0 && value <= Register.Methods.Count;
         }
 
         internal static bool IsQuitRequested(string userChoice)
         {
-            return string.Equals(userChoice, Keys.Quit, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(userChoice, Keybindings.Quit, StringComparison.OrdinalIgnoreCase);
         }
 
-        internal static bool IsCancelRequested(string userChoice)
+        internal static bool IsRestartRequested(string userChoice)
         {
-            return string.Equals(userChoice, Keys.Cancel, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(userChoice, Keybindings.Cancel, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

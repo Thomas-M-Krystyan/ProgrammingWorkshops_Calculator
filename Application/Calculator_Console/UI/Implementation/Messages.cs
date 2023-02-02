@@ -3,7 +3,7 @@ using Calculator_Console.Enums;
 using Calculator_Console.Extensions;
 using Calculator_Console.Helpers;
 
-namespace Calculator_Console.UI
+namespace Calculator_Console.UI.Implementation
 {
     /// <summary>
     /// The messages used for communication with the user.
@@ -44,12 +44,12 @@ namespace Calculator_Console.UI
             Console.Clear();
 
             // Reminder about selected method
-            Console_WriteColor(Helper.Methods[operationNumber].Method.Name, ConsoleColor.White);
+            Console_WriteColor(Register.Methods[operationNumber].Method.Name, ConsoleColor.White);
             // Quit or Cancel
             OrQuitOrCancel();
             // Confirm
             AndConfirm();
-            
+
             // Handle (potential) errors
             if (userChoice != string.Empty)
             {
@@ -86,7 +86,7 @@ namespace Calculator_Console.UI
             Console.Write("\n");
 
             // Operations
-            foreach (var method in Helper.Methods)
+            foreach (var method in Register.Methods)
             {
                 Console_WriteColor($"{method.Key}", ConsoleColor.Yellow);
                 Console.WriteLine($". {method.Value.Method.Name}");
@@ -116,7 +116,7 @@ namespace Calculator_Console.UI
             Quit();
             // Cancel
             Console.Write(" / [");
-            Console_WriteColor(Keys.Cancel, ConsoleColor.Yellow);
+            Console_WriteColor(Keybindings.Cancel, ConsoleColor.Yellow);
             Console.Write("]ancel ");
         }
 
@@ -126,7 +126,7 @@ namespace Calculator_Console.UI
         private static void Quit()
         {
             Console.Write("[");
-            Console_WriteColor(Keys.Quit, ConsoleColor.Yellow);
+            Console_WriteColor(Keybindings.Quit, ConsoleColor.Yellow);
             Console.Write("]uit");
         }
 
@@ -136,7 +136,7 @@ namespace Calculator_Console.UI
         private static void AndConfirm()
         {
             Console.Write("and press [");
-            Console_WriteColor(Keys.Confirm, ConsoleColor.Yellow);
+            Console_WriteColor(Keybindings.Confirm, ConsoleColor.Yellow);
             Console.WriteLine("]:");
         }
         #endregion
@@ -151,7 +151,7 @@ namespace Calculator_Console.UI
             Console.Write(text);
             Console.ResetColor();
         }
-        
+
         /// <summary>
         /// Writes the specified text in color, using <see cref="Console.WriteLine(string)"/> method.
         /// </summary>
