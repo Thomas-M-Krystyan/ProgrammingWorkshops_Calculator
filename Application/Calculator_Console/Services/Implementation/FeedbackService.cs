@@ -51,11 +51,11 @@ namespace Calculator_Console.Services.Implementation
             IMessagesService messages,
             IValidationService validator)
         {
-            _logger = logger;
-            _arithmetic = arithmetic;
-            _register = register;
-            _messages = messages;
-            _validator = validator;
+            this._logger = logger;
+            this._arithmetic = arithmetic;
+            this._register = register;
+            this._messages = messages;
+            this._validator = validator;
         }
 
         /// <inheritdoc cref="IFeedbackService.GetValidOperation(out ushort)" />
@@ -64,7 +64,7 @@ namespace Calculator_Console.Services.Implementation
             operationNumber = default;
 
             // 1. Ask for the math operation or cancellation
-            _messages.SelectCalculatorOperation(UserChoice);
+            this._messages.SelectCalculatorOperation(UserChoice);
             UserChoice = Console.ReadLine();
 
             // 2. Quit option
@@ -77,9 +77,9 @@ namespace Calculator_Console.Services.Implementation
 
             bool isSuccess =
                 // 3. Validate if the user input is numeric
-                _validator.IsInputNumeric(ref currentChoice, out operationNumber) &&
+                this._validator.IsInputNumeric(ref currentChoice, out operationNumber) &&
                 // 4. Validate if there is corresponding math operation
-                _validator.IsOperationExisting(operationNumber);
+                this._validator.IsOperationExisting(operationNumber);
 
             UserChoice = currentChoice;
 
@@ -101,17 +101,17 @@ namespace Calculator_Console.Services.Implementation
             selectedValue = double.NaN;
 
             // 1. Ask for the number or cancellation
-            _messages.SelectNumber(UserChoice, operationNumber, whichNumber);
+            this._messages.SelectNumber(UserChoice, operationNumber, whichNumber);
             UserChoice = Console.ReadLine();
 
             // 2. Quit option
-            if (_validator.IsQuitRequested(UserChoice))
+            if (this._validator.IsQuitRequested(UserChoice))
             {
                 return Response.Quit;
             }
 
             // 3. Restart option
-            if (_validator.IsRestartRequested(UserChoice))
+            if (this._validator.IsRestartRequested(UserChoice))
             {
                 ClearAnswers();  // Reset the previous user choice (to clear "wrong choices" on the previous screen)
 
@@ -121,7 +121,7 @@ namespace Calculator_Console.Services.Implementation
             string currentChoice = UserChoice;  // NOTE: Workaround of rule that passing properties to ref parameters is forbidden
 
             // 4. Validate if the user input is floating point number
-            bool isSuccess = _validator.IsInputDouble(ref currentChoice, out selectedValue);
+            bool isSuccess = this._validator.IsInputDouble(ref currentChoice, out selectedValue);
 
             UserChoice = currentChoice;
 
@@ -145,13 +145,13 @@ namespace Calculator_Console.Services.Implementation
             try
             {
                 // Resolve calculation method (based on user selection)
-                MethodInfo method = _register.Methods[operationNumber];
+                MethodInfo method = this._register.Methods[operationNumber];
 
                 // Execute it
-                double result = (double)method.Invoke(_arithmetic, new object[] { firstNumber, secondNumber });
+                double result = (double)method.Invoke(this._arithmetic, new object[] { firstNumber, secondNumber });
 
                 // SUCCESS: Print the result
-                _messages.PrintResult(result);
+                this._messages.PrintResult(result);
             }
             // FAILURE: Print the error
             catch (Exception exception)  // NOTE: .NET issue (e.g., with calling the method)
@@ -163,9 +163,9 @@ namespace Calculator_Console.Services.Implementation
                     message = invocationException.InnerException.Message;
                 }
 
-#pragma warning disable CA2254  // Error message cannot be a static expression because this is a generic exception handler
-                _logger.LogError($"\n{message}");
-#pragma warning restore CA2254
+                #pragma warning disable CA2254  // Error message cannot be a static expression because this is a generic exception handler
+                this._logger.LogError($"\n{message}");
+                #pragma warning restore CA2254
             }
 
             // 2. Quit or restart option
