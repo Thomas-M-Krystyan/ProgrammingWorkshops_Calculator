@@ -1,7 +1,8 @@
 ﻿using Calculator_Console.Services.Implementation;
 using Calculator_Console.Services.Interfaces;
-using Moq;
 using NUnit.Framework;
+using Operations.Implementation;
+using Operations.Interfaces;
 
 namespace Calculator_ConsoleTests.Validation
 {
@@ -13,9 +14,10 @@ namespace Calculator_ConsoleTests.Validation
         [OneTimeSetUp]
         public void SetupTests()
         {
-            Mock<IRegisterService> mockedRegister = new();
+            IArithmetic arithmetic = new Arithmetic();
+            IRegisterService register = new RegisterService(arithmetic);
 
-            this._validator = new ValidationService(mockedRegister.Object);
+            this._validator = new ValidationService(register);
         }
 
         [TestCase((ushort)0, false)]

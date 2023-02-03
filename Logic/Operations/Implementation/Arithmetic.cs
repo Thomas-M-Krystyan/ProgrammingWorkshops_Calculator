@@ -1,4 +1,5 @@
-﻿using Operations.Interfaces;
+﻿using Operations.Annodations;
+using Operations.Interfaces;
 using System;
 
 namespace Operations.Implementation
@@ -6,24 +7,28 @@ namespace Operations.Implementation
     /// <inheritdoc cref="IArithmetic" />
     public sealed class Arithmetic : IArithmetic
     {
+        [Api]
         /// <inheritdoc />
         public double Add(double firstNumber, double secondNumber)
         {
             return firstNumber + secondNumber;
         }
         
+        [Api]
         /// <inheritdoc />
         public double Subtract(double firstNumber, double secondNumber)
         {
             return firstNumber - secondNumber;
         }
         
+        [Api]
         /// <inheritdoc />
         public double Multiply(double firstNumber, double secondNumber)
         {
             return firstNumber * secondNumber;
         }
         
+        [Api]
         /// <inheritdoc />
         public double Divide(double firstNumber, double secondNumber)
         {

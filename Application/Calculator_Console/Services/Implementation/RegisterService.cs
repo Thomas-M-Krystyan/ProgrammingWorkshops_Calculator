@@ -1,4 +1,5 @@
 ﻿using Calculator_Console.Services.Interfaces;
+using Operations.Annodations;
 using Operations.Interfaces;
 using System.Reflection;
 
@@ -10,7 +11,7 @@ namespace Calculator_Console.Services.Implementation
         private readonly IArithmetic _arithmetic;
 
         /// <inheritdoc cref="IRegisterService.Methods" />
-        public IDictionary<ushort, Func<double, double, double>> Methods { get; private set; }
+        public IDictionary<ushort, MethodInfo> Methods { get; private set; }
 
         /// <summary>
         /// Initializes the <see cref="RegisterService"/> class.
@@ -26,17 +27,18 @@ namespace Calculator_Console.Services.Implementation
         /// Gets the collection of ordered available calculator operations.
         /// </summary>
         /// <returns>
-        ///   Data format: (1, method()).
+        ///   Data format: (1, methodInfo).
         /// </returns>
-        private IDictionary<ushort, Func<double, double, double>> GetArithmeticOperations()
+        private IDictionary<ushort, MethodInfo> GetArithmeticOperations()
         {
             ushort orderNumber = 1;
 
-            return GetMethods().ToDictionary(_ =>
+            return GetMethods()
+                .ToDictionary(
                 // Key
-                orderNumber++,
+                keySelector: _ => orderNumber++,
                 // Value
-                GetMethodDelegate);
+                elementSelector: methodInfo => methodInfo);
         }
 
         /// <summary>
@@ -45,18 +47,14 @@ namespace Calculator_Console.Services.Implementation
         /// <returns>Collection of methods meta data.</returns>
         private IEnumerable<MethodInfo> GetMethods()
         {
-            return this._arithmetic.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public);
+            return this._arithmetic.GetType()
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Where(IsApi);
         }
 
-        /// <summary>
-        /// Gets the the delegate to the provided method.
-        /// </summary>
-        private Func<double, double, double> GetMethodDelegate(MethodInfo method)
+        private static bool IsApi(MethodInfo methodInfo)
         {
-            var x = method;
-
-            // Creates a specific delegate type for instance methods
-            return (Func<double, double, double>)Delegate.CreateDelegate(typeof(Func<double, double, double>), this._arithmetic, method);
+            return Attribute.IsDefined(methodInfo, typeof(Api));
         }
     }
 }

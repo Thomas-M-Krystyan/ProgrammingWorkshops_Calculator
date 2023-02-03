@@ -3,6 +3,7 @@ using Calculator_Console.Services.Interfaces;
 using Calculator_Console.Services.Interfaces.UI;
 using Microsoft.Extensions.Logging;
 using Operations.Interfaces;
+using System.Reflection;
 
 namespace Calculator_Console.Services.Implementation.UI
 {
@@ -144,20 +145,24 @@ namespace Calculator_Console.Services.Implementation.UI
             // 1. Calculation and showing the result
             try
             {
-                // Resolve calculation method
-                Func<double, double, double> method = this._register.Methods[operationNumber];
+                // Resolve calculation method (based on user selection)
+                MethodInfo method = this._register.Methods[operationNumber];
 
                 // Execute it
-                double result = method.Invoke(firstNumber, secondNumber);
+                double result = (double)method.Invoke(this._arithmetic, new object[] { firstNumber, secondNumber });
 
                 // SUCCESS: Print the result
                 this._messages.PrintResult(result);
             }
-            catch (Exception exception)
+            // FAILURE: Print the error
+            catch (TargetInvocationException exception)
             {
                 #pragma warning disable CA2254  // Error message cannot be a static expression because this is a generic exception handler
-                // FAILURE: Print the error
-                _logger.LogError(exception.Message);
+                this._logger.LogError($"\n{exception.InnerException.Message}");
+            }
+            catch (Exception exception)
+            {
+                this._logger.LogError($"\n{exception.Message}");
                 #pragma warning restore CA2254
             }
 

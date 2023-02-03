@@ -1,4 +1,5 @@
 ﻿using Operations.Interfaces;
+using System.Reflection;
 
 namespace Calculator_Console.Services.Interfaces
 {
@@ -16,6 +17,6 @@ namespace Calculator_Console.Services.Interfaces
         ///     <item>Value: The name of a method ("Add", "Subtract"...)</item>
         ///   </list>
         /// </value>
-        internal IDictionary<ushort, Func<double, double, double>> Methods { get; }
+        internal IDictionary<ushort, MethodInfo> Methods { get; }
     }
 }

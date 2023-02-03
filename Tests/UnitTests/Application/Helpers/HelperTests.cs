@@ -1,9 +1,10 @@
 ﻿using Calculator_Console.Services.Implementation;
 using Calculator_Console.Services.Interfaces;
-using Moq;
 using NUnit.Framework;
+using Operations.Implementation;
 using Operations.Interfaces;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Calculator_ConsoleTests.Helpers
 {
@@ -15,16 +16,16 @@ namespace Calculator_ConsoleTests.Helpers
         [OneTimeSetUp]
         public void SetupTests()
         {
-            Mock<IArithmetic> mockedArithmetic = new();
+            IArithmetic arithmetic = new Arithmetic();
 
-            this._register = new RegisterService(mockedArithmetic.Object);
+            this._register = new RegisterService(arithmetic);
         }
 
         [Test]
         public void CheckProperty_Methods_ReturnsExpectedMethodsDataCollection()
         {
             // Act
-            IDictionary<ushort, System.Func<double, double, double>> methods = this._register.Methods;
+            IDictionary<ushort, MethodInfo> methods = this._register.Methods;
 
             // Assert
             Assert.That(methods, Has.Count.EqualTo(4));
