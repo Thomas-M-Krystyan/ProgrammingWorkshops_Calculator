@@ -61,7 +61,7 @@ namespace Calculator_Console.Services.Implementation
             }
 
             // Answer
-            Console.Write($"\nThe {whichNumber.LowerCase()} number: ");
+            Console.Write($"\nThe {whichNumber.LowerCase()} equation parameter: ");
         }
 
         /// <inheritdoc cref="IMessagesService.PrintResult(double)" />
