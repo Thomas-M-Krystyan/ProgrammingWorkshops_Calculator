@@ -150,19 +150,22 @@ namespace Calculator_Console.Services.Implementation.UI
 
                 // Execute it
                 double result = (double)method.Invoke(this._arithmetic, new object[] { firstNumber, secondNumber });
-
+                    
                 // SUCCESS: Print the result
                 this._messages.PrintResult(result);
             }
             // FAILURE: Print the error
-            catch (TargetInvocationException exception)
-            {
-                #pragma warning disable CA2254  // Error message cannot be a static expression because this is a generic exception handler
-                this._logger.LogError($"\n{exception.InnerException.Message}");
-            }
             catch (Exception exception)
             {
-                this._logger.LogError($"\n{exception.Message}");
+                string message = exception.Message;
+
+                if (exception is TargetInvocationException invocationException)
+                {
+                    message = invocationException.InnerException.Message;
+                }
+
+                #pragma warning disable CA2254  // Error message cannot be a static expression because this is a generic exception handler
+                this._logger.LogError($"\n{message}");
                 #pragma warning restore CA2254
             }
 
