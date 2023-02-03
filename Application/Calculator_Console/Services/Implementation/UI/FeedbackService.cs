@@ -155,11 +155,11 @@ namespace Calculator_Console.Services.Implementation.UI
                 this._messages.PrintResult(result);
             }
             // FAILURE: Print the error
-            catch (Exception exception)
+            catch (Exception exception)  // NOTE: .NET issue (e.g., with calling the method)
             {
                 string message = exception.Message;
 
-                if (exception is TargetInvocationException invocationException)
+                if (exception is TargetInvocationException invocationException)  // NOTE: Business logic issue (e.g., when dividing by 0)
                 {
                     message = invocationException.InnerException.Message;
                 }
