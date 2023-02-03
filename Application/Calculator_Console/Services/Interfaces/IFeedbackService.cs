@@ -1,6 +1,6 @@
 ﻿using Calculator_Console.Enums;
 
-namespace Calculator_Console.Services.Interfaces.UI
+namespace Calculator_Console.Services.Interfaces
 {
     /// <summary>
     /// Executes a certain operations and return a <see cref="Response"/> with operation or intermediate result.

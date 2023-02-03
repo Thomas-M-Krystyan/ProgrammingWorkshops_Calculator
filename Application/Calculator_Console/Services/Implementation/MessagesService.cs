@@ -2,10 +2,9 @@
 using Calculator_Console.Enums;
 using Calculator_Console.Extensions;
 using Calculator_Console.Services.Interfaces;
-using Calculator_Console.Services.Interfaces.UI;
 using System.Reflection;
 
-namespace Calculator_Console.Services.Implementation.UI
+namespace Calculator_Console.Services.Implementation
 {
     /// <inheritdoc cref="IMessagesService" />
     internal sealed class MessagesService : IMessagesService
@@ -17,7 +16,7 @@ namespace Calculator_Console.Services.Implementation.UI
         /// </summary>
         public MessagesService(IRegisterService register)
         {
-            this._register = register;
+            _register = register;
         }
 
         /// <inheritdoc cref="IMessagesService.SelectCalculatorOperation(string)" />
@@ -49,7 +48,7 @@ namespace Calculator_Console.Services.Implementation.UI
             Console.Clear();
 
             // Reminder about selected method
-            Console_WriteColor(this._register.Methods[operationNumber].Name, ConsoleColor.White);
+            Console_WriteColor(_register.Methods[operationNumber].Name, ConsoleColor.White);
             // Quit or Cancel
             OrQuitOrCancel();
             // Confirm
@@ -89,7 +88,7 @@ namespace Calculator_Console.Services.Implementation.UI
             Console.Write("\n");
 
             // Operations
-            foreach (KeyValuePair<ushort, MethodInfo> method in this._register.Methods)
+            foreach (KeyValuePair<ushort, MethodInfo> method in _register.Methods)
             {
                 Console_WriteColor($"{method.Key}", ConsoleColor.Yellow);
                 Console.WriteLine($". {method.Value.Name}");

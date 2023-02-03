@@ -1,6 +1,6 @@
 ﻿using Calculator_Console.Enums;
 
-namespace Calculator_Console.Services.Interfaces.UI
+namespace Calculator_Console.Services.Interfaces
 {
     /// <summary>
     /// The messages used for communication with the user.

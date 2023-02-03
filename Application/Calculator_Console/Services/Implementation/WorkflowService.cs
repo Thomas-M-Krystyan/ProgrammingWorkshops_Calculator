@@ -1,5 +1,5 @@
 ﻿using Calculator_Console.Enums;
-using Calculator_Console.Services.Interfaces.UI;
+using Calculator_Console.Services.Interfaces;
 
 namespace Calculator_Console.Services.Implementation
 {

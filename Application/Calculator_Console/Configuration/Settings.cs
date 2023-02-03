@@ -1,7 +1,5 @@
 ﻿using Calculator_Console.Services.Implementation;
-using Calculator_Console.Services.Implementation.UI;
 using Calculator_Console.Services.Interfaces;
-using Calculator_Console.Services.Interfaces.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

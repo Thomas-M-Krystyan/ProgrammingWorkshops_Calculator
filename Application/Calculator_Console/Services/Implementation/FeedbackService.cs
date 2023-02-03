@@ -1,11 +1,10 @@
 ﻿using Calculator_Console.Enums;
 using Calculator_Console.Services.Interfaces;
-using Calculator_Console.Services.Interfaces.UI;
 using Microsoft.Extensions.Logging;
 using Operations.Interfaces;
 using System.Reflection;
 
-namespace Calculator_Console.Services.Implementation.UI
+namespace Calculator_Console.Services.Implementation
 {
     /// <inheritdoc cref="IFeedbackService" />
     internal sealed class FeedbackService : IFeedbackService
@@ -52,11 +51,11 @@ namespace Calculator_Console.Services.Implementation.UI
             IMessagesService messages,
             IValidationService validator)
         {
-            this._logger = logger;
-            this._arithmetic = arithmetic;
-            this._register = register;
-            this._messages = messages;
-            this._validator = validator;
+            _logger = logger;
+            _arithmetic = arithmetic;
+            _register = register;
+            _messages = messages;
+            _validator = validator;
         }
 
         /// <inheritdoc cref="IFeedbackService.GetValidOperation(out ushort)" />
@@ -65,11 +64,11 @@ namespace Calculator_Console.Services.Implementation.UI
             operationNumber = default;
 
             // 1. Ask for the math operation or cancellation
-            this._messages.SelectCalculatorOperation(UserChoice);
+            _messages.SelectCalculatorOperation(UserChoice);
             UserChoice = Console.ReadLine();
 
             // 2. Quit option
-            if (this._validator.IsQuitRequested(UserChoice))
+            if (_validator.IsQuitRequested(UserChoice))
             {
                 return Response.Quit;
             }
@@ -78,9 +77,9 @@ namespace Calculator_Console.Services.Implementation.UI
 
             bool isSuccess =
                 // 3. Validate if the user input is numeric
-                this._validator.IsInputNumeric(ref currentChoice, out operationNumber) &&
+                _validator.IsInputNumeric(ref currentChoice, out operationNumber) &&
                 // 4. Validate if there is corresponding math operation
-                this._validator.IsOperationExisting(operationNumber);
+                _validator.IsOperationExisting(operationNumber);
 
             UserChoice = currentChoice;
 
@@ -102,17 +101,17 @@ namespace Calculator_Console.Services.Implementation.UI
             selectedValue = double.NaN;
 
             // 1. Ask for the number or cancellation
-            this._messages.SelectNumber(UserChoice, operationNumber, whichNumber);
+            _messages.SelectNumber(UserChoice, operationNumber, whichNumber);
             UserChoice = Console.ReadLine();
 
             // 2. Quit option
-            if (this._validator.IsQuitRequested(UserChoice))
+            if (_validator.IsQuitRequested(UserChoice))
             {
                 return Response.Quit;
             }
 
             // 3. Restart option
-            if (this._validator.IsRestartRequested(UserChoice))
+            if (_validator.IsRestartRequested(UserChoice))
             {
                 ClearAnswers();  // Reset the previous user choice (to clear "wrong choices" on the previous screen)
 
@@ -122,7 +121,7 @@ namespace Calculator_Console.Services.Implementation.UI
             string currentChoice = UserChoice;  // NOTE: Workaround of rule that passing properties to ref parameters is forbidden
 
             // 4. Validate if the user input is floating point number
-            bool isSuccess = this._validator.IsInputDouble(ref currentChoice, out selectedValue);
+            bool isSuccess = _validator.IsInputDouble(ref currentChoice, out selectedValue);
 
             UserChoice = currentChoice;
 
@@ -146,13 +145,13 @@ namespace Calculator_Console.Services.Implementation.UI
             try
             {
                 // Resolve calculation method (based on user selection)
-                MethodInfo method = this._register.Methods[operationNumber];
+                MethodInfo method = _register.Methods[operationNumber];
 
                 // Execute it
-                double result = (double)method.Invoke(this._arithmetic, new object[] { firstNumber, secondNumber });
-                    
+                double result = (double)method.Invoke(_arithmetic, new object[] { firstNumber, secondNumber });
+
                 // SUCCESS: Print the result
-                this._messages.PrintResult(result);
+                _messages.PrintResult(result);
             }
             // FAILURE: Print the error
             catch (Exception exception)  // NOTE: .NET issue (e.g., with calling the method)
@@ -164,9 +163,9 @@ namespace Calculator_Console.Services.Implementation.UI
                     message = invocationException.InnerException.Message;
                 }
 
-                #pragma warning disable CA2254  // Error message cannot be a static expression because this is a generic exception handler
-                this._logger.LogError($"\n{message}");
-                #pragma warning restore CA2254
+#pragma warning disable CA2254  // Error message cannot be a static expression because this is a generic exception handler
+                _logger.LogError($"\n{message}");
+#pragma warning restore CA2254
             }
 
             // 2. Quit or restart option
