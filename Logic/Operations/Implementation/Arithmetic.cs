@@ -40,5 +40,12 @@ namespace Operations.Implementation
             
             return firstNumber / secondNumber;
         }
+
+        [Api]
+        /// <inheritdoc />
+        public double Modulo(double firstNumber, double secondNumber)
+        {
+            return firstNumber % secondNumber;
+        }
     }
 }

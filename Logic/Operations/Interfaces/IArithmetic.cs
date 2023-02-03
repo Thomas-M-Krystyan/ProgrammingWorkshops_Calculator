@@ -36,5 +36,13 @@
         /// <param name="secondNumber">The second number.</param>
         /// <returns>The result (quotient) of dividing two numbers.</returns>
         public double Divide(double firstNumber, double secondNumber);
+
+        /// <summary>
+        /// Returns the rest of dividing two numbers by each other.
+        /// </summary>
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
+        /// <returns>The rest (modulation) of two numbers.</returns>
+        public double Modulo(double firstNumber, double secondNumber);
     }
 }
