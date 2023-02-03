@@ -28,7 +28,7 @@ namespace Calculator_ConsoleTests.Helpers
             IDictionary<ushort, MethodInfo> methods = this._register.Methods;
 
             // Assert
-            Assert.That(methods, Has.Count.EqualTo(5));
+            Assert.That(methods, Has.Count.EqualTo(6));
         }
     }
 }

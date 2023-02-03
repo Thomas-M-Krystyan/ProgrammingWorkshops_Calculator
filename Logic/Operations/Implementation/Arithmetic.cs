@@ -47,5 +47,12 @@ namespace Operations.Implementation
         {
             return firstNumber % secondNumber;
         }
+
+        [Api]
+        /// <inheritdoc />
+        public double Power(double firstNumber, double secondNumber)
+        {
+            return Math.Pow(firstNumber, secondNumber);
+        }
     }
 }
