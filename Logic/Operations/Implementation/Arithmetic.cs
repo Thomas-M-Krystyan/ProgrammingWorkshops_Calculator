@@ -50,9 +50,9 @@ namespace Operations.Implementation
 
         [Api]
         /// <inheritdoc />
-        public double Power(double firstNumber, double secondNumber)
+        public double Power(double number, double power)
         {
-            return Math.Pow(firstNumber, secondNumber);
+            return Math.Pow(number, power);
         }
     }
 }

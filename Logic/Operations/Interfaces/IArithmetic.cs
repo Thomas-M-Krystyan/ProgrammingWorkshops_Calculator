@@ -48,9 +48,9 @@
         /// <summary>
         /// Exponentiates the [x] number to the [y] power.
         /// </summary>
-        /// <param name="firstNumber">The number.</param>
-        /// <param name="secondNumber">The power.</param>
-        /// <returns>The result (exponentation) of [x] number brought to the [y] power.</returns>
-        public double Power(double firstNumber, double secondNumber);
+        /// <param name="number">The number.</param>
+        /// <param name="power">The power.</param>
+        /// <returns>The result (exponentation) of [x] number lifted to the [y] power.</returns>
+        public double Power(double number, double power);
     }
 }
