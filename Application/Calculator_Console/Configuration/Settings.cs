@@ -47,7 +47,7 @@ namespace Calculator_Console.Configuration
             serviceCollection
                 // Registers ILogger<T> service for console app
                 .AddLogging(loggingBuilder =>
-                    loggingBuilder.SetMinimumLevel(LogLevel.Debug)
+                    loggingBuilder.SetMinimumLevel(LogLevel.Trace)
                                   .ClearProviders()
                                   .AddConsole())
                 .BuildServiceProvider();
