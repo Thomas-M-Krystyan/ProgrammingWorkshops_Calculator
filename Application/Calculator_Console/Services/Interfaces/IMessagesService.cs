@@ -21,6 +21,6 @@ namespace Calculator_Console.Services.Interfaces
         /// <summary>
         /// Prints the result.
         /// </summary>
-        internal void PrintResult(double result);
+        internal void PrintResult(object result);
     }
 }

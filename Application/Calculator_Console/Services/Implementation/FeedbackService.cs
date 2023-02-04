@@ -148,7 +148,7 @@ namespace Calculator_Console.Services.Implementation
                 MethodInfo method = this._register.Methods[operationNumber];
 
                 // Execute it
-                double result = (double)method.Invoke(this._arithmetic, new object[] { firstNumber, secondNumber });
+                object result = method.Invoke(this._arithmetic, new object[] { firstNumber, secondNumber });
 
                 // SUCCESS: Print the result
                 this._messages.PrintResult(result);

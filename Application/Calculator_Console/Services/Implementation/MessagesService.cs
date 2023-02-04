@@ -65,7 +65,7 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IMessagesService.PrintResult(double)" />
-        void IMessagesService.PrintResult(double result)
+        void IMessagesService.PrintResult(object result)
         {
             Console.Clear();
 
