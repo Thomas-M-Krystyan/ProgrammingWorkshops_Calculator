@@ -37,7 +37,7 @@ namespace Operations.Interfaces
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
         /// <returns>The result (quotient) of dividing two numbers.</returns>
-        public double Divide(double firstNumber, double secondNumber);
+        public string Divide(double firstNumber, double secondNumber);
 
         /// <summary>
         /// Returns the rest of dividing two numbers by each other.

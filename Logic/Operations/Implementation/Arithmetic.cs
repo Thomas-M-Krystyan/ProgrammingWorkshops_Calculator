@@ -30,15 +30,17 @@ namespace Operations.Implementation
         
         [Operation("x / y")]
         /// <inheritdoc />
-        public double Divide(double firstNumber, double secondNumber)
+        public string Divide(double firstNumber, double secondNumber)
         {
             if (secondNumber == 0)
             {
-                // Replace the default exception message "Attempted to divide by 0"
-                throw new DivideByZeroException("Cannot divide by 0!");
+                // Replace the exception by a message
+                return "Cannot divide by 0!";
             }
-            
-            return firstNumber / secondNumber;
+
+            string quotient = (firstNumber / secondNumber).ToString();
+
+            return quotient.Equals("-0") ? "0" : quotient;
         }
 
         [Operation("x % y")]

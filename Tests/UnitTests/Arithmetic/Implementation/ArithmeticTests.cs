@@ -52,23 +52,22 @@ namespace OperationsTests.Implementation
         public void TestMethod_Divide_ForGiven_A_B_ReturnsExpected_C(double[] arithmeticCases)
         {
             // Act
-            double actualResult = this._arithmeticOperations.Divide(arithmeticCases[0], arithmeticCases[1]);
+            string actualResult = this._arithmeticOperations.Divide(arithmeticCases[0], arithmeticCases[1]);
 
             // Assert
-            Assert.That(actualResult, Is.EqualTo(arithmeticCases[2]));
+            Assert.That(actualResult, Is.EqualTo(arithmeticCases[2].ToString()));
         }
 
         [TestCaseSource(nameof(GetArithmeticCases_Divide_ByZero))]
         public void TestMethod_Divide_ForGiven_A_0_ThrowsDivideByZeroException(double[] arithmeticCases)
         {
             // Arrange
-            const string expectedExceptionMessage = "Cannot divide by 0!";
+            const string expectedMessage = "Cannot divide by 0!";
 
             // Act & Assert
-            DivideByZeroException exception = Assert.Throws<DivideByZeroException>(() =>
-                this._arithmeticOperations.Divide(arithmeticCases[0], arithmeticCases[1]));
+            string actualResult = this._arithmeticOperations.Divide(arithmeticCases[0], arithmeticCases[1]);
 
-            Assert.That(exception?.Message, Is.EqualTo(expectedExceptionMessage));
+            Assert.That(actualResult, Is.EqualTo(expectedMessage));
         }
         
         #region Test cases
@@ -126,9 +125,9 @@ namespace OperationsTests.Implementation
 
         private static IEnumerable<double[]> GetArithmeticCases_Divide_ByZero()
         {
-            yield return new double[] { 1, 0, 1 };      // + 0
-            yield return new double[] { -1, 0, -1 };    // - 0
-            yield return new double[] { 0, 0, 0 };      // 0 0
+            yield return new double[] {  1, 0 };  // + 0
+            yield return new double[] { -1, 0 };  // - 0
+            yield return new double[] {  0, 0 };  // 0 0
         }
         #endregion
     }
