@@ -54,7 +54,14 @@ namespace Operations.Implementation
         /// <inheritdoc />
         public string Remainder(double firstNumber, double secondNumber)
         {
-            return $"T:{Math.Floor(firstNumber / secondNumber)}|R:{Modulo(firstNumber, secondNumber)}";
+            string quotient = Divide(firstNumber, secondNumber);
+            bool isSuccess = double.TryParse(quotient, out double parsedResult);
+
+            return isSuccess
+                ? parsedResult <= 0
+                    ? "T:0"
+                    : $"T:{Math.Floor(parsedResult)}|R:{Modulo(firstNumber, secondNumber)}"
+                : quotient;
         }
 
         [Operation("x^y")]
