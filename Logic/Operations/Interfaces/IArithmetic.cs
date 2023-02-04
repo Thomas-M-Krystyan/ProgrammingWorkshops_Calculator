@@ -68,5 +68,13 @@
         /// <param name="root">The root level.</param>
         /// <returns>The result (rooting) of [x] number to the [y] level.</returns>
         public double Root(double number, double root);
+
+        /// <summary>
+        /// Adds the given [y] % to the [x] number.
+        /// </summary>
+        /// <param name="number">The number</param>
+        /// <param name="percent">The percent.</param>
+        /// <returns>The [x] number increased by [y] percent.</returns>
+        public double Percent_Add(double number, double percent);
     }
 }

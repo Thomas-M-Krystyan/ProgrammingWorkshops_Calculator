@@ -70,5 +70,20 @@ namespace Operations.Implementation
         {
             return Math.Pow(number, 1 / root);
         }
+
+        [Operation("x + y%")]
+        /// <inheritdoc />
+        public double Percent_Add(double number, double percent)
+        {
+            return number + GetPercent(number, percent);
+        }
+
+        /// <summary>
+        /// The formula to get a percent of the given number.
+        /// </summary>
+        private static double GetPercent(double number, double percent)
+        {
+            return number * (percent / 100);
+        }
     }
 }
