@@ -19,6 +19,14 @@ namespace Calculator_Console.Services.Interfaces
         /// </value>
         internal IDictionary<ushort, MethodInfo> Methods { get; }
 
-        internal int GetLongestName { get; }
+        /// <summary>
+        /// Gets the longest name of arithmetic methods.
+        /// </summary>
+        internal ushort GetLongestMethodName { get; }
+
+        /// <summary>
+        /// Gets the length of the last arithmetic method number.
+        /// </summary>
+        internal int GetLastMethodNoLength { get; }
     }
 }

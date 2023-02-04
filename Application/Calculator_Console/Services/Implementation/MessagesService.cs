@@ -90,8 +90,8 @@ namespace Calculator_Console.Services.Implementation
             // Operations
             foreach (KeyValuePair<ushort, MethodInfo> method in this._register.Methods)
             {
-                Console_WriteColor($"{method.Key}", ConsoleColor.Yellow);
-                Console.WriteLine($". {method.Value.Name}{GetSeparator(method.Value)}{method.Value.GetFormula()}");
+                Console_WriteColor($"{GetNumberSeparator(method.Key)}{method.Key}", ConsoleColor.Yellow);
+                Console.WriteLine($". {method.Value.Name}{GetNameSeparator(method.Value)}{method.Value.GetFormula()}");
             }
 
             // Quit
@@ -101,11 +101,36 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <summary>
-        /// Gets the smart tabularization to inline all formulas in one column.
+        /// Gets the smart tabularization to indent all method numbers to the period character.
+        /// <code>
+        /// Example:
+        /// 
+        ///   1. Method1
+        ///  15. Method2
+        /// </code>
         /// </summary>
-        private string GetSeparator(MethodInfo methodInfo)
+        private string GetNumberSeparator<T>(T number)
         {
-            int longestMethodName = this._register.GetLongestName;
+            int lastNumberLength = this._register.GetLastMethodNoLength;
+            int currentNumberLength = number.ToString().Length;
+
+            return currentNumberLength == lastNumberLength
+                ? string.Empty
+                : new string(' ', lastNumberLength - currentNumberLength);
+        }
+
+        /// <summary>
+        /// Gets the smart tabularization to inline all formulas in one column.
+        /// <code>
+        /// Example:
+        /// 
+        ///  Add      (Formula...)
+        ///  Subtract (Formula...)
+        /// </code>
+        /// </summary>
+        private string GetNameSeparator(MethodInfo methodInfo)
+        {
+            int longestMethodName = this._register.GetLongestMethodName;
 
             return methodInfo.Name.Length == longestMethodName
                 ? " "
