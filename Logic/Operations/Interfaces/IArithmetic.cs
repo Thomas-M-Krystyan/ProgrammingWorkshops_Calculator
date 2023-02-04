@@ -91,6 +91,14 @@
         /// <param name="number">The number</param>
         /// <param name="percent">The percent.</param>
         /// <returns>The [y] percent of the [x] number.</returns>
-        public double Percent_Get(double number, double percent);
+        public string Percent_From(double number, double percent);
+
+        /// <summary>
+        /// Checks what percent of the [x] number the [y] numbers is.
+        /// </summary>
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
+        /// <returns>The percent of the [x] number from the [y] number.</returns>
+        public string Percent_Of(double firstNumber, double secondNumber);
     }
 }
