@@ -70,11 +70,19 @@
         public double Root(double number, double root);
 
         /// <summary>
-        /// Adds the given [y] % to the [x] number.
+        /// Adds the given [y]% to the [x] number.
         /// </summary>
         /// <param name="number">The number</param>
         /// <param name="percent">The percent.</param>
         /// <returns>The [x] number increased by [y] percent.</returns>
         public double Percent_Add(double number, double percent);
+
+        /// <summary>
+        /// Subtracts the given [y]% from the [x] number.
+        /// </summary>
+        /// <param name="number">The number</param>
+        /// <param name="percent">The percent.</param>
+        /// <returns>The [x] number decreased by [y] percent.</returns>
+        public double Percent_Subtract(double number, double percent);
     }
 }

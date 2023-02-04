@@ -78,6 +78,13 @@ namespace Operations.Implementation
             return number + GetPercent(number, percent);
         }
 
+        [Operation("x - y%")]
+        /// <inheritdoc />
+        public double Percent_Subtract(double number, double percent)
+        {
+            return number - GetPercent(number, percent);
+        }
+
         /// <summary>
         /// The formula to get a percent of the given number.
         /// </summary>
