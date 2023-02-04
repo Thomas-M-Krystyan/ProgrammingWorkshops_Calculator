@@ -54,5 +54,12 @@ namespace Operations.Implementation
         {
             return Math.Pow(number, power);
         }
+
+        [Operation("y√x")]
+        /// <inheritdoc />
+        public double Root(double number, double root)
+        {
+            return Math.Pow(number, 1 / root);
+        }
     }
 }

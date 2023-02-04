@@ -1,4 +1,6 @@
-﻿namespace Operations.Interfaces
+﻿using Operations.Annodations;
+
+namespace Operations.Interfaces
 {
     /// <summary>
     /// The calculator mathematical operations.
@@ -52,5 +54,14 @@
         /// <param name="power">The power.</param>
         /// <returns>The result (exponentation) of [x] number lifted to the [y] power.</returns>
         public double Power(double number, double power);
+
+        /// <summary>
+        /// Gives the [y] root level for the [x] number.
+        /// </summary>
+        /// <param name="number">The number.</param>
+        /// <param name="root">The root level.</param>
+        /// <returns>The result (rooting) of [x] number to the [y] level.</returns>
+        [Operation("y√x")]
+        public double Root(double number, double root);
     }
 }
