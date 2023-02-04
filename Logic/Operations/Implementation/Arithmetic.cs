@@ -75,21 +75,21 @@ namespace Operations.Implementation
         /// <inheritdoc />
         public double Percent_Add(double number, double percent)
         {
-            return number + GetPercent(number, percent);
+            return Add(number, GetPercent(number, percent));
         }
 
         [Operation("x - y% of x")]
         /// <inheritdoc />
         public double Percent_Subtract(double number, double percent)
         {
-            return number - GetPercent(number, percent);
+            return Subtract(number, GetPercent(number, percent));
         }
 
         [Operation("x * y% of x")]
         /// <inheritdoc />
         public double Percent_Multiply(double number, double percent)
         {
-            return number * GetPercent(number, percent);
+            return Multiply(number, GetPercent(number, percent));
         }
 
         /// <summary>
