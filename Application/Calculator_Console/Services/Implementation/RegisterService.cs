@@ -11,7 +11,30 @@ namespace Calculator_Console.Services.Implementation
         private readonly IArithmetic _arithmetic;
 
         /// <inheritdoc cref="IRegisterService.Methods" />
-        public IDictionary<ushort, MethodInfo> Methods { get; private set; }
+        public IDictionary<ushort, MethodInfo> Methods { get; }
+
+        private int _longestName = -1;
+
+        int IRegisterService.GetLongestName
+        {
+            get
+            {
+                // Calculate the longest method name only once, since they will not change later
+                if (this._longestName == -1)
+                {
+                    int longestName = default;
+
+                    foreach (KeyValuePair<ushort, MethodInfo> method in Methods)
+                    {
+                        longestName = Math.Max(longestName, method.Value.Name.Length);
+                    }
+
+                    this._longestName = longestName;
+                }
+
+                return this._longestName;
+            }
+        }
 
         /// <summary>
         /// Initializes the <see cref="RegisterService"/> class.
@@ -20,7 +43,7 @@ namespace Calculator_Console.Services.Implementation
         {
             this._arithmetic = arithmetic;
 
-            Methods = GetArithmeticOperations();
+            this.Methods = GetArithmeticOperations();
         }
 
         /// <summary>

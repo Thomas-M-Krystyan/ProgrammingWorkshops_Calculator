@@ -18,5 +18,7 @@ namespace Calculator_Console.Services.Interfaces
         ///   </list>
         /// </value>
         internal IDictionary<ushort, MethodInfo> Methods { get; }
+
+        internal int GetLongestName { get; }
     }
 }

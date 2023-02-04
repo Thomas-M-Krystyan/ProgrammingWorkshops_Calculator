@@ -17,7 +17,7 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IValidationService.IsInputNumeric(ref string, out ushort)" />
-        public bool IsInputNumeric(ref string userChoice, out ushort value)
+        bool IValidationService.IsInputNumeric(ref string userChoice, out ushort value)
         {
             userChoice = TranslateEmptyInput(userChoice);
 
@@ -25,7 +25,7 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IValidationService.IsInputDouble(ref string, out double)" />
-        public bool IsInputDouble(ref string userChoice, out double value)
+        bool IValidationService.IsInputDouble(ref string userChoice, out double value)
         {
             userChoice = TranslateEmptyInput(userChoice);
 
@@ -33,19 +33,19 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IValidationService.IsOperationExisting(ushort)" />
-        public bool IsOperationExisting(ushort value)
+        bool IValidationService.IsOperationExisting(ushort value)
         {
             return value > 0 && value <= this._register.Methods.Count;
         }
 
         /// <inheritdoc cref="IValidationService.IsQuitRequested(string)" />
-        public bool IsQuitRequested(string userChoice)
+        bool IValidationService.IsQuitRequested(string userChoice)
         {
             return string.Equals(userChoice, Keybindings.Quit, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <inheritdoc cref="IValidationService.IsRestartRequested(string)" />
-        public bool IsRestartRequested(string userChoice)
+        bool IValidationService.IsRestartRequested(string userChoice)
         {
             return string.Equals(userChoice, Keybindings.Cancel, StringComparison.OrdinalIgnoreCase);
         }

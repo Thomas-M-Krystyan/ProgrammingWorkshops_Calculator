@@ -20,7 +20,7 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IMessagesService.SelectCalculatorOperation(string)" />
-        public void SelectCalculatorOperation(string userChoice)
+        void IMessagesService.SelectCalculatorOperation(string userChoice)
         {
             Console.Clear();
 
@@ -43,7 +43,7 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IMessagesService.SelectNumber(string, ushort, Number)" />
-        public void SelectNumber(string userChoice, ushort operationNumber, Number whichNumber)
+        void IMessagesService.SelectNumber(string userChoice, ushort operationNumber, Number whichNumber)
         {
             Console.Clear();
 
@@ -65,7 +65,7 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IMessagesService.PrintResult(double)" />
-        public void PrintResult(double result)
+        void IMessagesService.PrintResult(double result)
         {
             Console.Clear();
 
@@ -91,13 +91,25 @@ namespace Calculator_Console.Services.Implementation
             foreach (KeyValuePair<ushort, MethodInfo> method in this._register.Methods)
             {
                 Console_WriteColor($"{method.Key}", ConsoleColor.Yellow);
-                Console.WriteLine($". {method.Value.Name}");
+                Console.WriteLine($". {method.Value.Name}{GetSeparator(method.Value)}{method.Value.GetFormula()}");
             }
 
             // Quit
             Console.Write("\n");
             Quit();
             Console.WriteLine(" the application");
+        }
+
+        /// <summary>
+        /// Gets the smart tabularization to inline all formulas in one column.
+        /// </summary>
+        private string GetSeparator(MethodInfo methodInfo)
+        {
+            int longestMethodName = this._register.GetLongestName;
+
+            return methodInfo.Name.Length == longestMethodName
+                ? " "
+                : new string(' ', longestMethodName - methodInfo.Name.Length + 1);
         }
 
         /// <summary>

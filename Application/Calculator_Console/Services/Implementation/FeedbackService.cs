@@ -59,7 +59,7 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IFeedbackService.GetValidOperation(out ushort)" />
-        public Response GetValidOperation(out ushort operationNumber)
+        Response IFeedbackService.GetValidOperation(out ushort operationNumber)
         {
             operationNumber = default;
 
@@ -96,7 +96,7 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IFeedbackService.GetValidParameter(ushort, Number, out double)" />
-        public Response GetValidParameter(ushort operationNumber, Number whichNumber, out double selectedValue)
+        Response IFeedbackService.GetValidParameter(ushort operationNumber, Number whichNumber, out double selectedValue)
         {
             selectedValue = double.NaN;
 
@@ -139,7 +139,7 @@ namespace Calculator_Console.Services.Implementation
         }
 
         /// <inheritdoc cref="IFeedbackService.PerformOperation(ushort, double, double)" />
-        public Response PerformOperation(ushort operationNumber, double firstNumber, double secondNumber)
+        Response IFeedbackService.PerformOperation(ushort operationNumber, double firstNumber, double secondNumber)
         {
             // 1. Calculation and showing the result
             try

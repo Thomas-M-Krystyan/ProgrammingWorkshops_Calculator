@@ -16,7 +16,7 @@ namespace Operations.Annodations
         public string Formula
         {
             get => this._formula;
-            set => this._formula = $"\tFormula: {(string.IsNullOrEmpty(value) ? "???" : value)}";
+            set => this._formula = $"(Formula: {(string.IsNullOrEmpty(value) ? "???" : value)})";
         }
 
         /// <summary>
