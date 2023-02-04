@@ -54,7 +54,7 @@ namespace Operations.Implementation
         /// <inheritdoc />
         public string Remainder(double firstNumber, double secondNumber)
         {
-            return $"T:{Math.Floor(firstNumber / secondNumber)}|R:{firstNumber % secondNumber}";
+            return $"T:{Math.Floor(firstNumber / secondNumber)}|R:{Modulo(firstNumber, secondNumber)}";
         }
 
         [Operation("x^y")]
@@ -68,7 +68,7 @@ namespace Operations.Implementation
         /// <inheritdoc />
         public double Root(double number, double root)
         {
-            return Math.Pow(number, 1 / root);
+            return Power(number, 1 / root);
         }
 
         [Operation("x + y% of x")]
