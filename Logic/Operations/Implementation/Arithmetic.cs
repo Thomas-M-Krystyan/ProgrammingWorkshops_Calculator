@@ -50,6 +50,13 @@ namespace Operations.Implementation
             return firstNumber % secondNumber;
         }
 
+        [Operation("x /% y => T(imes) | R(est)")]
+        /// <inheritdoc />
+        public string Remainder(double firstNumber, double secondNumber)
+        {
+            return $"T:{Math.Floor(firstNumber / secondNumber)}|R:{firstNumber % secondNumber}";
+        }
+
         [Operation("x^y")]
         /// <inheritdoc />
         public double Power(double number, double power)

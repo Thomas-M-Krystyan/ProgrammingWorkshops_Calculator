@@ -1,6 +1,4 @@
-﻿using Operations.Annodations;
-
-namespace Operations.Interfaces
+﻿namespace Operations.Interfaces
 {
     /// <summary>
     /// The calculator mathematical operations.
@@ -48,6 +46,14 @@ namespace Operations.Interfaces
         public double Modulo(double firstNumber, double secondNumber);
 
         /// <summary>
+        /// <inheritdoc cref="Divide(double, double)"/> With eventual remainder.
+        /// </summary>
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
+        /// <returns><inheritdoc cref="Divide(double, double)"/> With eventual remainder.</returns>
+        public string Remainder(double firstNumber, double secondNumber);
+
+        /// <summary>
         /// Exponentiates the [x] number to the [y] power.
         /// </summary>
         /// <param name="number">The number.</param>
@@ -61,7 +67,6 @@ namespace Operations.Interfaces
         /// <param name="number">The number.</param>
         /// <param name="root">The root level.</param>
         /// <returns>The result (rooting) of [x] number to the [y] level.</returns>
-        [Operation("y√x")]
         public double Root(double number, double root);
     }
 }
