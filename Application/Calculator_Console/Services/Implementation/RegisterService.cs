@@ -49,12 +49,12 @@ namespace Calculator_Console.Services.Implementation
         {
             return this._arithmetic.GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                .Where(IsApi);
+                .Where(IsCalculatorMethod);
         }
 
-        private static bool IsApi(MethodInfo methodInfo)
+        private static bool IsCalculatorMethod(MethodInfo methodInfo)
         {
-            return Attribute.IsDefined(methodInfo, typeof(Api));
+            return Attribute.IsDefined(methodInfo, typeof(Operation));
         }
     }
 }

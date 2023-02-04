@@ -7,28 +7,28 @@ namespace Operations.Implementation
     /// <inheritdoc cref="IArithmetic" />
     public sealed class Arithmetic : IArithmetic
     {
-        [Api]
+        [Operation]
         /// <inheritdoc />
         public double Add(double firstNumber, double secondNumber)
         {
             return firstNumber + secondNumber;
         }
         
-        [Api]
+        [Operation]
         /// <inheritdoc />
         public double Subtract(double firstNumber, double secondNumber)
         {
             return firstNumber - secondNumber;
         }
         
-        [Api]
+        [Operation]
         /// <inheritdoc />
         public double Multiply(double firstNumber, double secondNumber)
         {
             return firstNumber * secondNumber;
         }
         
-        [Api]
+        [Operation]
         /// <inheritdoc />
         public double Divide(double firstNumber, double secondNumber)
         {
@@ -41,14 +41,14 @@ namespace Operations.Implementation
             return firstNumber / secondNumber;
         }
 
-        [Api]
+        [Operation]
         /// <inheritdoc />
         public double Modulo(double firstNumber, double secondNumber)
         {
             return firstNumber % secondNumber;
         }
 
-        [Api]
+        [Operation]
         /// <inheritdoc />
         public double Power(double number, double power)
         {
