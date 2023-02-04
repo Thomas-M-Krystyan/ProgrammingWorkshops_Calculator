@@ -84,5 +84,13 @@
         /// <param name="percent">The percent.</param>
         /// <returns>The [x] number decreased by [y] percent.</returns>
         public double Percent_Subtract(double number, double percent);
+
+        /// <summary>
+        /// Multiplies the [x] number by the given [y]%.
+        /// </summary>
+        /// <param name="number">The number</param>
+        /// <param name="percent">The percent.</param>
+        /// <returns>The [x] number multiplied by [y] percent.</returns>
+        public double Percent_Multiply(double number, double percent);
     }
 }

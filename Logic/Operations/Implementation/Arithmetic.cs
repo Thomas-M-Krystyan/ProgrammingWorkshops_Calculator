@@ -85,6 +85,13 @@ namespace Operations.Implementation
             return number - GetPercent(number, percent);
         }
 
+        [Operation("x * y% of x")]
+        /// <inheritdoc />
+        public double Percent_Multiply(double number, double percent)
+        {
+            return number * GetPercent(number, percent);
+        }
+
         /// <summary>
         /// The formula to get a percent of the given number.
         /// </summary>
