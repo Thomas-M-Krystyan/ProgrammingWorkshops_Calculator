@@ -71,14 +71,14 @@ namespace Operations.Implementation
             return Math.Pow(number, 1 / root);
         }
 
-        [Operation("x + y%")]
+        [Operation("x + y% of x")]
         /// <inheritdoc />
         public double Percent_Add(double number, double percent)
         {
             return number + GetPercent(number, percent);
         }
 
-        [Operation("x - y%")]
+        [Operation("x - y% of x")]
         /// <inheritdoc />
         public double Percent_Subtract(double number, double percent)
         {
