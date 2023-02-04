@@ -70,7 +70,7 @@
         public double Root(double number, double root);
 
         /// <summary>
-        /// Adds the given [y]% to the [x] number.
+        /// Adds the given [y] percent to the [x] number.
         /// </summary>
         /// <param name="number">The number</param>
         /// <param name="percent">The percent.</param>
@@ -78,7 +78,7 @@
         public double Percent_Add(double number, double percent);
 
         /// <summary>
-        /// Subtracts the given [y]% from the [x] number.
+        /// Subtracts the given [y] percentfrom the [x] number.
         /// </summary>
         /// <param name="number">The number</param>
         /// <param name="percent">The percent.</param>
@@ -86,11 +86,11 @@
         public double Percent_Subtract(double number, double percent);
 
         /// <summary>
-        /// Multiplies the [x] number by the given [y]%.
+        /// Gets the [y] percent of the [x] number.
         /// </summary>
         /// <param name="number">The number</param>
         /// <param name="percent">The percent.</param>
-        /// <returns>The [x] number multiplied by [y] percent.</returns>
-        public double Percent_Multiply(double number, double percent);
+        /// <returns>The [y] percent of the [x] number.</returns>
+        public double Percent_Get(double number, double percent);
     }
 }
