@@ -18,14 +18,14 @@ namespace Calculator_ConsoleTests.Services
         {
             IArithmetic arithmetic = new Arithmetic();
 
-            _register = new RegisterService(arithmetic);
+            this._register = new RegisterService(arithmetic);
         }
 
         [Test]
         public void CheckProperty_Methods_ReturnsExpectedMethodsDataCollection()
         {
             // Act
-            IDictionary<ushort, MethodInfo> methods = _register.Methods;
+            IDictionary<ushort, MethodInfo> methods = this._register.Methods;
 
             // Assert
             Assert.That(methods, Has.Count.EqualTo(12));

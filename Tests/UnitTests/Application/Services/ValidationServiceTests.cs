@@ -17,7 +17,7 @@ namespace Calculator_ConsoleTests.Services
             IArithmetic arithmetic = new Arithmetic();
             IRegisterService register = new RegisterService(arithmetic);
 
-            _validator = new ValidationService(register);
+            this._validator = new ValidationService(register);
         }
 
         [TestCase(0, false)]
@@ -27,7 +27,7 @@ namespace Calculator_ConsoleTests.Services
         public void CheckMethod_IsOperationExisting_ForValue_A_ReturnsExpectedResult(int value, bool expectedResult)
         {
             // Act
-            bool actualResult = _validator.IsOperationExisting((ushort)value);
+            bool actualResult = this._validator.IsOperationExisting((ushort)value);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
