@@ -6,10 +6,10 @@ using Operations.Interfaces;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Calculator_ConsoleTests.Helpers
+namespace Calculator_ConsoleTests.Services
 {
     [TestFixture]
-    public class HelperTests
+    public class RegisterServiceTests
     {
         private IRegisterService _register;
 
@@ -18,14 +18,14 @@ namespace Calculator_ConsoleTests.Helpers
         {
             IArithmetic arithmetic = new Arithmetic();
 
-            this._register = new RegisterService(arithmetic);
+            _register = new RegisterService(arithmetic);
         }
 
         [Test]
         public void CheckProperty_Methods_ReturnsExpectedMethodsDataCollection()
         {
             // Act
-            IDictionary<ushort, MethodInfo> methods = this._register.Methods;
+            IDictionary<ushort, MethodInfo> methods = _register.Methods;
 
             // Assert
             Assert.That(methods, Has.Count.EqualTo(12));
