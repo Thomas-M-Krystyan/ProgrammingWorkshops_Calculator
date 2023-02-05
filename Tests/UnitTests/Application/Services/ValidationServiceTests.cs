@@ -30,6 +30,9 @@ namespace Calculator_ConsoleTests.Services
         [TestCase("a", false)]
         [TestCase("$", false)]
         [TestCase("9-1-1", false)]
+        [TestCase("\t", false)]
+        [TestCase("\r\n", false)]
+        [TestCase("€.‚ƒ„…†‡ˆ‰Š‹Œ.Ž.", false)]
         public void CheckMethod_IsInputNumeric_ForValue_A_ReturnsExpectedResult(string value, bool expectedResult)
         {
             // Act
