@@ -3,6 +3,8 @@ using Calculator_Console.Services.Interfaces;
 using NUnit.Framework;
 using Operations.Implementation;
 using Operations.Interfaces;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Calculator_ConsoleTests.Services
 {
@@ -20,26 +22,24 @@ namespace Calculator_ConsoleTests.Services
             this._validator = new ValidationService(register);
         }
 
-        [TestCase("", false)]
-        [TestCase(" ", false)]
-        [TestCase(null, false)]
-        [TestCase("0", true)]
-        [TestCase("-5", false)]  // Only positive numbers are expected (ushort)
-        [TestCase("99", true)]
-        [TestCase("65536", false)]  // Too large number; > 65535 (ushort)
-        [TestCase("a", false)]
-        [TestCase("$", false)]
-        [TestCase("9-1-1", false)]
-        [TestCase("\t", false)]
-        [TestCase("\r\n", false)]
-        [TestCase("€.‚ƒ„…†‡ˆ‰Š‹Œ.Ž.", false)]
-        public void CheckMethod_IsInputNumeric_ForGivenValue_ReturnsExpectedResult(string value, bool expectedResult)
+        [TestCaseSource(nameof(GetNumericTestCases))]
+        public void CheckMethod_IsInputNumeric_ForGivenValue_ReturnsExpectedResult((string Value, bool ExpectedResult) data)
         {
             // Act
-            bool actualResult = this._validator.IsInputNumeric(ref value, out _);
+            bool actualResult = this._validator.IsInputNumeric(ref data.Value, out _);
 
             // Assert
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
+            Assert.That(actualResult, Is.EqualTo(data.Value is "-5" or "99999" ? false : data.ExpectedResult));
+        }
+
+        [TestCaseSource(nameof(GetNumericTestCases))]
+        public void CheckMethod_IsInputDouble_ForGivenValue_ReturnsExpectedResult((string Value, bool ExpectedResult) data)
+        {
+            // Act
+            bool actualResult = this._validator.IsInputDouble(ref data.Value, out _);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(data.ExpectedResult));
         }
 
         [TestCase(0, false)]
@@ -55,36 +55,65 @@ namespace Calculator_ConsoleTests.Services
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
-        [TestCase("", false)]
-        [TestCase(" ", false)]
-        [TestCase(null, false)]
-        [TestCase("5", false)]
-        [TestCase("a", false)]
-        [TestCase("q", true)]
-        [TestCase("Q", true)]
-        public void CheckMethod_IsQuitRequested_ForGivenValue_ReturnsExpectedResult(string input, bool expectedResult)
+        [TestCaseSource(nameof(GetRequestsTestCases))]
+        [TestCaseSource(nameof(GetQuitRequestsTestCases))]
+        public void CheckMethod_IsQuitRequested_ForGivenValue_ReturnsExpectedResult((string Input, bool ExpectedResult) data)
         {
             // Act
-            bool actualResult = this._validator.IsQuitRequested(input);
+            bool actualResult = this._validator.IsQuitRequested(data.Input);
 
             // Assert
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
+            Assert.That(actualResult, Is.EqualTo(data.ExpectedResult));
         }
 
-        [TestCase("", false)]
-        [TestCase(" ", false)]
-        [TestCase(null, false)]
-        [TestCase("5", false)]
-        [TestCase("a", false)]
-        [TestCase("c", true)]
-        [TestCase("C", true)]
-        public void CheckMethod_IsRestartRequested_ForGivenValue_ReturnsExpectedResult(string input, bool expectedResult)
+        [TestCaseSource(nameof(GetRequestsTestCases))]
+        [TestCaseSource(nameof(GetRestartRequestsTestCases))]
+        public void CheckMethod_IsRestartRequested_ForGivenValue_ReturnsExpectedResult((string Input, bool ExpectedResult) data)
         {
             // Act
-            bool actualResult = this._validator.IsRestartRequested(input);
+            bool actualResult = this._validator.IsRestartRequested(data.Input);
 
             // Assert
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
+            Assert.That(actualResult, Is.EqualTo(data.ExpectedResult));
+        }
+
+        private static IEnumerable<(string, bool)> GetNumericTestCases()
+        {
+            yield return ("", false);
+            yield return (" ", false);
+            yield return (null, false);
+            yield return ("0", true);
+            yield return ("-5", true);
+            yield return ("99", true);
+            yield return ("99999", true);
+            yield return ("a", false);
+            yield return ("$", false);
+            yield return ("9-1-1", false);
+            yield return ("\t", false);
+            yield return ("\r\n", false);
+            yield return ("标准号", false);
+            yield return ("€.‚ƒ„…†‡ˆ‰Š‹Œ.Ž.", false);
+        }
+
+        private static IEnumerable<(string, bool)> GetRequestsTestCases()
+        {
+            yield return ("", false);
+            yield return (" ", false);
+            yield return (null, false);
+            yield return ("5", false);
+            yield return ("a", false);
+        }
+
+        private static IEnumerable<(string, bool)> GetQuitRequestsTestCases()
+        {
+            yield return ("q", true);
+            yield return ("Q", true);
+        }
+
+        private static IEnumerable<(string, bool)> GetRestartRequestsTestCases()
+        {
+            yield return ("c", true);
+            yield return ("C", true);
         }
     }
 }
