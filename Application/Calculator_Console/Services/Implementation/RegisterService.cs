@@ -10,38 +10,23 @@ namespace Calculator_Console.Services.Implementation
     {
         private readonly IArithmetic _arithmetic;
 
-        /// <inheritdoc cref="IRegisterService.Methods" />
-        public IDictionary<ushort, MethodInfo> Methods { get; }
-
         private ushort _longestName;
         private ushort _methodNumber;
+        private int _methodNumberLength;
+
+        /// <inheritdoc cref="IRegisterService.Methods" />
+        public IDictionary<ushort, MethodInfo> Methods { get; }
 
         /// <inheritdoc cref="IRegisterService.GetLongestMethodName" />
         ushort IRegisterService.GetLongestMethodName
         {
-            get
-            {
-                // Calculate the longest method name only once, since they will not change later
-                if (this._longestName == default)
-                {
-                    int longestName = default;
-
-                    foreach (KeyValuePair<ushort, MethodInfo> method in this.Methods)
-                    {
-                        longestName = Math.Max(longestName, method.Value.Name.Length);
-                    }
-
-                    this._longestName = (ushort)longestName;
-                }
-
-                return this._longestName;
-            }
+            get => GetOrCalculateLongestName();
         }
 
         /// <inheritdoc cref="IRegisterService.GetLastMethodNoLength" />
         int IRegisterService.GetLastMethodNoLength
         {
-            get => this._methodNumber.ToString().Length;
+            get => GetOrCalculateNumberLength();
         }
 
         /// <summary>
@@ -84,6 +69,34 @@ namespace Calculator_Console.Services.Implementation
         private static bool IsCalculatorMethod(MethodInfo methodInfo)
         {
             return Attribute.IsDefined(methodInfo, typeof(Operation));
+        }
+
+        private ushort GetOrCalculateLongestName()
+        {
+            // Calculate the longest method name only once, since they will not change later
+            if (this._longestName == default)
+            {
+                int longestName = default;
+
+                foreach (KeyValuePair<ushort, MethodInfo> method in this.Methods)
+                {
+                    longestName = Math.Max(longestName, method.Value.Name.Length);
+                }
+
+                this._longestName = (ushort)longestName;
+            }
+
+            return this._longestName;
+        }
+
+        private int GetOrCalculateNumberLength()
+        {
+            if (this._methodNumberLength == default)
+            {
+                this._methodNumberLength = this._methodNumber.ToString().Length;
+            }
+
+            return this._methodNumberLength;
         }
     }
 }
