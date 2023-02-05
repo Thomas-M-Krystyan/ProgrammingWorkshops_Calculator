@@ -20,14 +20,14 @@ namespace Calculator_ConsoleTests.Validation
             this._validator = new ValidationService(register);
         }
 
-        [TestCase((ushort)0, false)]
-        [TestCase((ushort)1, true)]
-        [TestCase((ushort)3, true)]
-        [TestCase((ushort)999, false)]
-        public void CheckMethod_IsOperationExisting_ForValue_A_ReturnsExpectedResult(ushort value, bool expectedResult)
+        [TestCase(0, false)]
+        [TestCase(1, true)]
+        [TestCase(3, true)]
+        [TestCase(999, false)]
+        public void CheckMethod_IsOperationExisting_ForValue_A_ReturnsExpectedResult(int value, bool expectedResult)
         {
             // Act
-            bool actualResult = this._validator.IsOperationExisting(value);
+            bool actualResult = this._validator.IsOperationExisting((ushort)value);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
