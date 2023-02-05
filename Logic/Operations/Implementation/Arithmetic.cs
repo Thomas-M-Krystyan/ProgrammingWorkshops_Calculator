@@ -47,7 +47,9 @@ namespace Operations.Implementation
         /// <inheritdoc />
         public double Modulo(double firstNumber, double secondNumber)
         {
-            return firstNumber % secondNumber;
+            double module = firstNumber % secondNumber;
+
+            return double.IsNaN(module) ? default : module;
         }
 
         [Operation("x /% y => T(imes) | R(est)")]
