@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using Operations.Implementation;
-using System;
 using System.Collections.Generic;
 
 namespace OperationsTests.Implementation
