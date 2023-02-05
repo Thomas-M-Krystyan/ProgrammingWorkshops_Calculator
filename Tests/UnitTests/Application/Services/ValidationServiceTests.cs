@@ -33,7 +33,7 @@ namespace Calculator_ConsoleTests.Services
         [TestCase("\t", false)]
         [TestCase("\r\n", false)]
         [TestCase("€.‚ƒ„…†‡ˆ‰Š‹Œ.Ž.", false)]
-        public void CheckMethod_IsInputNumeric_ForValue_A_ReturnsExpectedResult(string value, bool expectedResult)
+        public void CheckMethod_IsInputNumeric_ForGivenValue_ReturnsExpectedResult(string value, bool expectedResult)
         {
             // Act
             bool actualResult = this._validator.IsInputNumeric(ref value, out _);
@@ -46,10 +46,40 @@ namespace Calculator_ConsoleTests.Services
         [TestCase(1, true)]
         [TestCase(3, true)]
         [TestCase(999, false)]
-        public void CheckMethod_IsOperationExisting_ForValue_A_ReturnsExpectedResult(int value, bool expectedResult)
+        public void CheckMethod_IsOperationExisting_ForGivenValue_ReturnsExpectedResult(int value, bool expectedResult)
         {
             // Act
             bool actualResult = this._validator.IsOperationExisting((ushort)value);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [TestCase("", false)]
+        [TestCase(" ", false)]
+        [TestCase(null, false)]
+        [TestCase("a", false)]
+        [TestCase("q", true)]
+        [TestCase("Q", true)]
+        public void CheckMethod_IsQuitRequested_ForGivenValue_ReturnsExpectedResult(string input, bool expectedResult)
+        {
+            // Act
+            bool actualResult = this._validator.IsQuitRequested(input);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [TestCase("", false)]
+        [TestCase(" ", false)]
+        [TestCase(null, false)]
+        [TestCase("a", false)]
+        [TestCase("c", true)]
+        [TestCase("C", true)]
+        public void CheckMethod_IsRestartRequested_ForGivenValue_ReturnsExpectedResult(string input, bool expectedResult)
+        {
+            // Act
+            bool actualResult = this._validator.IsRestartRequested(input);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
