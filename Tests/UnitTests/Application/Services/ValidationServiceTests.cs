@@ -20,6 +20,25 @@ namespace Calculator_ConsoleTests.Services
             this._validator = new ValidationService(register);
         }
 
+        [TestCase("", false)]
+        [TestCase(" ", false)]
+        [TestCase(null, false)]
+        [TestCase("0", true)]
+        [TestCase("-5", false)]  // Only positive numbers are expected (ushort)
+        [TestCase("99", true)]
+        [TestCase("65536", false)]  // Too large number; > 65535 (ushort)
+        [TestCase("a", false)]
+        [TestCase("$", false)]
+        [TestCase("9-1-1", false)]
+        public void CheckMethod_IsInputNumeric_ForValue_A_ReturnsExpectedResult(string value, bool expectedResult)
+        {
+            // Act
+            bool actualResult = this._validator.IsInputNumeric(ref value, out _);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
         [TestCase(0, false)]
         [TestCase(1, true)]
         [TestCase(3, true)]
