@@ -3,7 +3,6 @@ using Calculator_Console.Services.Interfaces;
 using NUnit.Framework;
 using Operations.Implementation;
 using Operations.Interfaces;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Calculator_ConsoleTests.Services
