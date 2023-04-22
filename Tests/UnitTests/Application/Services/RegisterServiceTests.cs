@@ -49,8 +49,11 @@ namespace Calculator_ConsoleTests.Services
             ushort firstResult = registerMock.Object.GetLongestMethodName;
 
             // Assert #1
-            Assert.That(actualMethods, Is.Empty);  // Mocked register is using injected dummy IArithmetic service
-            Assert.That(firstResult, Is.Zero);     // Generating the first result
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualMethods, Is.Empty);  // Mocked register is using injected dummy IArithmetic service
+                Assert.That(firstResult, Is.Zero);     // Generating the first result
+            });
 
             // Arrange #2
             registerMock
@@ -60,11 +63,13 @@ namespace Calculator_ConsoleTests.Services
             // Act #2
             actualMethods = registerMock.Object.Methods;
             ushort secondResult = registerMock.Object.GetLongestMethodName;  // Run the method again
-
+            
             // Assert #2
-            Assert.That(actualMethods, Has.Count.EqualTo(1));
-            Assert.That(secondResult, Is.Zero);  // The result should be cached even if the collection was modified
-                                                                 // Normally such change would't be possible because methods are scanned once
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualMethods, Has.Count.EqualTo(1));
+                Assert.That(secondResult, Is.Zero);  // The result should be cached even if the collection was modified
+            });
         }
 
         [Test]

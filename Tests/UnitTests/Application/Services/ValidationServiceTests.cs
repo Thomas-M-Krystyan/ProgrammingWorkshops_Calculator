@@ -28,7 +28,7 @@ namespace Calculator_ConsoleTests.Services
             bool actualResult = this._validator.IsInputNumeric(ref data.Value, out _);
 
             // Assert
-            Assert.That(actualResult, Is.EqualTo(data.Value is "-5" or "99999" ? false : data.ExpectedResult));
+            Assert.That(actualResult, Is.EqualTo(data.Value is not "-5" and not "99999" && data.ExpectedResult));
         }
 
         [TestCaseSource(nameof(GetNumericTestCases))]
